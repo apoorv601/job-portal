@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruiter Profile - Hong Kong Expat Jobs</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="index.html"><h1>Hong Kong Expat Jobs</h1></a>
+            </div>
+            <div class="auth-buttons">
+                <a href="post-job.html" class="btn">Post New Job</a>
+                <a href="#" id="logout-button" class="btn secondary">Logout</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section id="profile-section">
+            <div class="section-header">
+                <h2>My Recruiter Profile</h2>
+            </div>
+            <div id="profile-content" class="profile-card">
+                <!-- Profile details will be dynamically inserted here -->
+            </div>
+        </section>
+        <section id="company-profile-section">
+            <div class="section-header">
+                <h2>Company Profile</h2>
+            </div>
+            <div id="company-profile-content" class="profile-card">
+                <!-- Company profile details will be dynamically inserted here -->
+            </div>
+        </section>
+        <section id="posted-jobs-section">
+            <div class="section-header">
+                <h2>My Job Postings</h2>
+            </div>
+            <div id="posted-jobs-content" class="job-listings-container">
+                <!-- Job postings will be dynamically inserted here -->
+            </div>
+        </section>
+        <section id="applicants-section" class="hidden">
+            <div class="section-header">
+                <h2 id="job-applicants-title">Applicants</h2>
+                <button id="back-to-jobs" class="secondary">Back to Jobs</button>
+            </div>
+            <div id="applicants-content" class="applicants-container">
+                <!-- Applicants will be dynamically inserted here -->
+            </div>
+        </section>
+    </main>
+    <footer><div class="footer-container"><p>&copy; 2025 Hong Kong Expat Jobs.</p></div></footer>
+    <script src="recruiter-profile.js"></script>
+</body>
+</html>

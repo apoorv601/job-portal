@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hong Kong Expat Jobs - Find Jobs for Foreigners in Hong Kong</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="jobsdb-header">
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="index.html" id="site-logo-link"><img src="https://www.seek.com.hk/_next/static/images/jobsdb-logo.svg" alt="JobsDB Logo" style="height:40px;vertical-align:middle;"></a>
+            </div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link active">Job Search</a>
+                <a href="applicant-profile.html" class="nav-link">Profile</a>
+                <a href="my-applications.html" class="nav-link">My Applications</a>
+                <a href="login.html?role=recruiter" class="nav-link">Recruiter</a>
+            </nav>
+            <div class="auth-buttons">
+                <a href="login.html?role=applicant" class="btn" id="login-button">Sign In</a>
+                <a href="register.html?role=applicant" class="btn secondary" id="register-button">Register</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <!-- Search Banner -->
+        <section class="search-banner-jobsdb">
+            <div class="search-banner-content">
+                <h1 class="search-title-jobsdb">Find Jobs in Hong Kong</h1>
+                <form id="search-form" class="search-form-jobsdb">
+                    <input type="text" id="search-input" class="search-input-jobsdb" placeholder="Job title, keywords or company" autocomplete="off">
+                    <button type="submit" class="search-btn-jobsdb"><i class="fas fa-search"></i> Search</button>
+                </form>
+                <div class="quick-links">
+                    <span>Popular:</span>
+                    <a href="#" class="quick-link">Accounting</a>
+                    <a href="#" class="quick-link">Sales</a>
+                    <a href="#" class="quick-link">IT</a>
+                    <a href="#" class="quick-link">Marketing</a>
+                    <a href="#" class="quick-link">Clerk</a>
+                </div>
+            </div>
+        </section>
+        <!-- Job Listings -->
+        <section class="jobs-section-jobsdb">
+            <div class="section-header-jobsdb">
+                <h2>Latest Jobs</h2>
+            </div>
+            <div id="job-listings" class="job-listings-jobsdb">
+                <!-- Job cards will be injected here by app.js -->
+            </div>
+        </section>
+    </main>
+    <footer class="jobsdb-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="https://www.seek.com.hk/_next/static/images/jobsdb-logo.svg" alt="JobsDB Logo" style="height:32px;">
+            </div>
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+            </div>
+            <div class="footer-copy">&copy; 2025 Hong Kong Expat Jobs. Inspired by JobsDB.</div>
+        </div>
+    </footer>
+    <script src="app.js"></script>
+</body>
+</html>
