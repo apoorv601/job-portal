@@ -7,13 +7,17 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
+    <header class="jobsdb-header">
         <div class="header-container">
             <div class="logo-container">
-                <a href="index.html"><h1>Hong Kong Expat Jobs</h1></a>
+                <a href="index.html" id="site-logo-link"><img src="logo.png" alt="Hong Kong Expat Jobs Logo" style="height:40px;vertical-align:middle;"></a>
             </div>
+            <nav class="main-nav">
+                <a href="recruiter-profile.html" class="nav-link active">Profile</a>
+                <a href="post-job.html" class="nav-link">Post Job</a>
+                <a href="index.html" class="nav-link">Job Search</a>
+            </nav>
             <div class="auth-buttons">
-                <a href="post-job.html" class="btn">Post New Job</a>
                 <a href="#" id="logout-button" class="btn secondary">Logout</a>
             </div>
         </div>
@@ -23,7 +27,7 @@
             <div class="section-header">
                 <h2>My Recruiter Profile</h2>
             </div>
-            <div id="profile-content" class="profile-card">
+            <div id="profile-content" class="profile-card recruiter-profile-card">
                 <!-- Profile details will be dynamically inserted here -->
             </div>
         </section>
@@ -31,7 +35,7 @@
             <div class="section-header">
                 <h2>Company Profile</h2>
             </div>
-            <div id="company-profile-content" class="profile-card">
+            <div id="company-profile-content" class="profile-card recruiter-company-card">
                 <!-- Company profile details will be dynamically inserted here -->
             </div>
         </section>

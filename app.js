@@ -34,6 +34,10 @@ function capitalizeFirstLetter(string) {
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
     const jobListingsSection = document.getElementById('job-listings');
+    // Patch: Use job-listings as jobsContainer if jobs-container is null
+    let jobsContainer = document.getElementById('jobs-container');
+    if (!jobsContainer) jobsContainer = document.getElementById('job-listings');
+    let jobsLoading = document.getElementById('jobs-loading'); // May not exist, so add null check
     const jobDetailsSection = document.getElementById('job-details');
     const jobDetailsContent = document.getElementById('job-details-content');
     const backToListingsButton = document.getElementById('back-to-listings');
@@ -53,8 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const postJobForm = document.getElementById('post-job-form');
     
     // Additional DOM elements for enhanced features
-    const jobsContainer = document.getElementById('jobs-container');
-    const jobsLoading = document.getElementById('jobs-loading');
     const jobsPagination = document.getElementById('jobs-pagination');
     const sortBySelect = document.getElementById('sort-by');
     const showRegisterLink = document.getElementById('show-register');
@@ -183,8 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 1. Always load jobs on home page and handle spinner ---
     async function fetchJobs(page = 1, filters = {}, sort = 'relevance') {
         try {
-            jobsLoading.style.display = 'flex';
-            jobsContainer.innerHTML = '';
+            if (jobsLoading) jobsLoading.style.display = 'flex';
+            if (jobsContainer) jobsContainer.innerHTML = '';
             
             // Build query params
             let queryParams = new URLSearchParams({
@@ -224,23 +226,25 @@ document.addEventListener('DOMContentLoaded', () => {
             return data;
         } catch (error) {
             console.error('Error fetching jobs:', error);
-            jobsContainer.innerHTML = `
-                <div class="error-message">
-                    <h3>Connection Error</h3>
-                    <p>${error.message}</p>
-                    <div class="server-instructions">
-                        <h4>How to start the server:</h4>
-                        <ol>
-                            <li>Make sure MongoDB is installed and running</li>
-                            <li>Open a terminal in the project root directory</li>
-                            <li>Run: <code>npm install</code> (if you haven't already)</li>
-                            <li>Run: <code>npm start</code> or <code>node backend/server.js</code></li>
-                        </ol>
+            if (jobsContainer) {
+                jobsContainer.innerHTML = `
+                    <div class="error-message">
+                        <h3>Connection Error</h3>
+                        <p>${error.message}</p>
+                        <div class="server-instructions">
+                            <h4>How to start the server:</h4>
+                            <ol>
+                                <li>Make sure MongoDB is installed and running</li>
+                                <li>Open a terminal in the project root directory</li>
+                                <li>Run: <code>npm install</code> (if you haven't already)</li>
+                                <li>Run: <code>npm start</code> or <code>node backend/server.js</code></li>
+                            </ol>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            }
         } finally {
-            jobsLoading.style.display = 'none';
+            if (jobsLoading) jobsLoading.style.display = 'none';
         }
     }
 
@@ -1154,11 +1158,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="job-desc-jobsdb">${job.description ? job.description.substring(0, 120) + (job.description.length > 120 ? '...' : '') : ''}</div>
                 <div class="job-footer-jobsdb">
                     <span>Posted: ${job.postedAt ? new Date(job.postedAt).toLocaleDateString() : ''}</span>
-                    <button class="view-job-btn" onclick="window.location='login.html?role=applicant'">View</button>
+                    <button class="view-job-btn" data-job-id="${job._id}">View</button>
                 </div>
             </div>
         `).join('') : '<div style="padding:2rem;text-align:center;color:#888;">No jobs found.</div>';
         jobListings.innerHTML = html;
+        // Add event listeners to view buttons
+        document.querySelectorAll('.view-job-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const jobId = btn.getAttribute('data-job-id');
+                if (!jobId) return;
+                // Redirect to a dedicated job details page
+                window.location.href = `job-details.html?job=${jobId}`;
+            });
+        });
     }
 
     function doSearch(query) {
@@ -1196,5 +1209,78 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (searchInput) searchInput.value = link.textContent.trim();
             });
         });
+    }
+
+    // --- Job Details Modal/Section Logic ---
+    // Listen for jobId in URL and show job details if present
+    function showJobDetailsFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const jobId = urlParams.get('job');
+        if (jobId) {
+            // Unhide or create job details section if missing
+            let jobDetailsSection = document.getElementById('job-details');
+            let jobDetailsContent = document.getElementById('job-details-content');
+            if (!jobDetailsSection) {
+                jobDetailsSection = document.createElement('section');
+                jobDetailsSection.id = 'job-details';
+                jobDetailsSection.className = 'job-details-section';
+                jobDetailsContent = document.createElement('div');
+                jobDetailsContent.id = 'job-details-content';
+                jobDetailsSection.appendChild(jobDetailsContent);
+                document.body.appendChild(jobDetailsSection);
+            } else {
+                jobDetailsSection.classList.remove('hidden');
+            }
+            fetchAndDisplayJobDetails(jobId);
+        }
+    }
+    // Call on load
+    showJobDetailsFromUrl();
+    window.addEventListener('popstate', showJobDetailsFromUrl);
+
+    // --- Fetch and display job details ---
+    async function fetchAndDisplayJobDetails(jobId) {
+        const jobDetailsSection = document.getElementById('job-details');
+        const jobDetailsContent = document.getElementById('job-details-content');
+        if (!jobDetailsSection || !jobDetailsContent) return;
+        jobDetailsSection.classList.remove('hidden');
+        jobDetailsContent.innerHTML = '<div class="loading-spinner"></div>';
+        try {
+            const res = await fetch(`/api/jobs/${jobId}`);
+            if (!res.ok) throw new Error('Failed to load job details');
+            const job = await res.json();
+            // Render job details (simplified for brevity)
+            jobDetailsContent.innerHTML = `
+                <h2>${job.title}</h2>
+                <div><b>Company:</b> ${job.company}</div>
+                <div><b>Location:</b> ${job.location}</div>
+                <div><b>Type:</b> ${job.type}</div>
+                <div><b>Description:</b> ${job.description}</div>
+                <button id="apply-job-btn">Apply for this job</button>
+            `;
+            // Add apply button handler
+            document.getElementById('apply-job-btn').onclick = async function() {
+                const authToken = localStorage.getItem('authToken');
+                if (!authToken) {
+                    alert('You must be logged in to apply.');
+                    window.location.href = 'login.html?role=applicant';
+                    return;
+                }
+                // Call backend to apply
+                const res = await fetch(`/api/jobs/${jobId}/apply`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (res.ok) {
+                    alert('Application submitted!');
+                    // Optionally refresh application history
+                } else {
+                    const data = await res.json();
+                    alert(data.message || 'Failed to apply.');
+                }
+            };
+        } catch (e) {
+            jobDetailsContent.innerHTML = '<div class="error-message">Could not load job details.</div>';
+        }
     }
 });

@@ -7,13 +7,17 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
+    <header class="jobsdb-header">
         <div class="header-container">
             <div class="logo-container">
-                <a href="index.html"><h1>Hong Kong Expat Jobs</h1></a>
+                <a href="index.html" id="site-logo-link"><img src="logo.png" alt="Hong Kong Expat Jobs Logo" style="height:40px;vertical-align:middle;"></a>
             </div>
+            <nav class="main-nav">
+                <a href="post-job.html" class="nav-link active">Post Job</a>
+                <a href="recruiter-profile.html" class="nav-link">Profile</a>
+                <a href="index.html" class="nav-link">Job Search</a>
+            </nav>
             <div class="auth-buttons">
-                <a href="recruiter-profile.html" class="btn">My Profile</a>
                 <a href="#" id="logout-button" class="btn secondary">Logout</a>
             </div>
         </div>
@@ -23,7 +27,7 @@
             <div class="section-header">
                 <h2>Post a New Job</h2>
             </div>
-            <form id="post-job-form" class="form-section">
+            <form id="post-job-form" class="form-section recruiter-post-job-form">
                 <div class="form-group">
                     <label for="job-title">Job Title:</label>
                     <input type="text" id="job-title" name="job-title" placeholder="e.g. Senior Software Engineer" required>

@@ -11,7 +11,7 @@
     <header class="jobsdb-header">
         <div class="header-container">
             <div class="logo-container">
-                <a href="index.html" id="site-logo-link"><img src="https://www.seek.com.hk/_next/static/images/jobsdb-logo.svg" alt="JobsDB Logo" style="height:40px;vertical-align:middle;"></a>
+                <a href="index.html" id="site-logo-link"><img src="logo.png" alt="Hong Kong Expat Jobs Logo" style="height:40px;vertical-align:middle;"></a>
             </div>
             <nav class="main-nav">
                 <a href="index.html" class="nav-link active">Job Search</a>
@@ -53,11 +53,15 @@
                 <!-- Job cards will be injected here by app.js -->
             </div>
         </section>
+        <!-- Job Details (Hidden by default) -->
+        <section id="job-details" class="job-details-section hidden">
+            <div id="job-details-content"></div>
+        </section>
     </main>
     <footer class="jobsdb-footer">
         <div class="footer-container">
             <div class="footer-logo">
-                <img src="https://www.seek.com.hk/_next/static/images/jobsdb-logo.svg" alt="JobsDB Logo" style="height:32px;">
+                <img src="logo.png" alt="Hong Kong Expat Jobs Logo" style="height:32px;">
             </div>
             <div class="footer-links">
                 <a href="#">About</a>
@@ -68,6 +72,8 @@
             <div class="footer-copy">&copy; 2025 Hong Kong Expat Jobs. Inspired by JobsDB.</div>
         </div>
     </footer>
+    <!-- JWT Decode CDN for session handling -->
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
