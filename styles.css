@@ -877,3 +877,124 @@ body {
     padding: 1.2rem 0.5rem;
   }
 }
+
+/* Modern Recruiter Profile and Company Profile Cards */
+.recruiter-profile-card-modern, .recruiter-company-card-modern {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.09);
+  max-width: 520px;
+  margin: 2.5rem auto 2rem auto;
+  padding: 2.2rem 2rem 2rem 2rem;
+  font-size: 1.08em;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.recruiter-profile-card-modern h3, .recruiter-company-card-modern h3 {
+  color: #1560bd;
+  margin-bottom: 0.7rem;
+}
+.recruiter-profile-card-modern .profile-main-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.recruiter-profile-card-modern .profile-photo {
+  font-size: 3.5rem;
+  color: #b3c6e0;
+  margin-bottom: 0.7rem;
+  align-self: center;
+}
+.recruiter-profile-card-modern .profile-email, .recruiter-profile-card-modern .profile-phone {
+  color: #555;
+  font-size: 1em;
+}
+.recruiter-profile-card-modern .profile-section {
+  margin-bottom: 1.1rem;
+}
+.recruiter-profile-card-modern .profile-list {
+  margin: 0.3em 0 0 1.2em;
+}
+.section-header h2 {
+  font-size: 1.5rem;
+  color: #222;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+@media (max-width: 700px) {
+  .recruiter-profile-card-modern, .recruiter-company-card-modern {
+    padding: 1.2rem 0.5rem;
+  }
+  .section-header h2 {
+    font-size: 1.1rem;
+  }
+}
+
+/* Recruiter Job Listings Modern Styles */
+.recruiter-job-listings-modern .jobs-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.7rem;
+  margin-top: 1.2rem;
+}
+.recruiter-job-listings-modern .jobs-table th {
+  background: #f5f8fa;
+  color: #1560bd;
+  font-weight: 600;
+  padding: 0.8em 1em;
+  border-radius: 8px 8px 0 0;
+  text-align: left;
+}
+.recruiter-job-listings-modern .jobs-table td {
+  background: #fff;
+  color: #222;
+  padding: 1em 1em;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+  vertical-align: middle;
+}
+.recruiter-job-listings-modern .jobs-table tr {
+  transition: box-shadow 0.15s;
+}
+.recruiter-job-listings-modern .jobs-table tr:hover td {
+  box-shadow: 0 2px 12px rgba(21,96,189,0.08);
+}
+.recruiter-job-listings-modern .status-pill {
+  display: inline-block;
+  padding: 0.3em 0.9em;
+  border-radius: 12px;
+  font-size: 0.98em;
+  font-weight: 500;
+  background: #e6f7ff;
+  color: #1560bd;
+}
+.recruiter-job-listings-modern .status-expired {
+  background: #fff1f0;
+  color: #cf1322;
+}
+.recruiter-job-listings-modern .status-active {
+  background: #eaffea;
+  color: #389e0d;
+}
+.recruiter-job-listings-modern .btn.small {
+  font-size: 0.98em;
+  padding: 0.3em 1em;
+  border-radius: 6px;
+  margin-right: 0.5em;
+}
+.recruiter-job-listings-modern .btn.small[disabled] {
+  background: #f5f5f5;
+  color: #aaa;
+  cursor: not-allowed;
+}
+@media (max-width: 700px) {
+  .recruiter-job-listings-modern .jobs-table th, .recruiter-job-listings-modern .jobs-table td {
+    padding: 0.5em 0.4em;
+    font-size: 0.98em;
+  }
+}
