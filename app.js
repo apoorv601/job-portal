@@ -948,6 +948,73 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Update navigation links based on user role
+    function updateHomeNavForRole(role) {
+        const mainNav = document.querySelector('.main-nav');
+        const authButtons = document.querySelector('.auth-buttons');
+        if (!mainNav) return;
+        let navHtml = '';
+        let btnHtml = '';
+        if (role === 'recruiter') {
+            navHtml = `
+                <a href="index.html" class="nav-link active">Job Search</a>
+                <a href="recruiter-profile.html" class="nav-link">Recruiter Profile</a>
+                <a href="post-job.html" class="nav-link">Post Job</a>
+            `;
+            btnHtml = `
+                <a href="recruiter-profile.html" class="btn" id="profile-button">Recruiter Profile</a>
+                <button id="logout-button" class="btn secondary">Logout</button>
+            `;
+        } else if (role === 'applicant') {
+            navHtml = `
+                <a href="index.html" class="nav-link active">Job Search</a>
+                <a href="applicant-profile.html" class="nav-link">Profile</a>
+                <a href="my-applications.html" class="nav-link">My Applications</a>
+            `;
+            btnHtml = `
+                <a href="applicant-profile.html" class="btn" id="profile-button">My Profile</a>
+                <a href="my-applications.html" class="btn" id="my-applications-button">My Applications</a>
+                <button id="logout-button" class="btn secondary">Logout</button>
+            `;
+        } else {
+            navHtml = `
+                <a href="index.html" class="nav-link active">Job Search</a>
+                <a href="login.html?role=applicant" class="nav-link">Applicant</a>
+                <a href="login.html?role=recruiter" class="nav-link">Recruiter</a>
+            `;
+            btnHtml = `
+                <a href="login.html?role=applicant" class="btn" id="login-button">Sign In</a>
+                <a href="register.html?role=applicant" class="btn secondary" id="register-button">Register</a>
+            `;
+        }
+        mainNav.innerHTML = navHtml;
+        if (authButtons) authButtons.innerHTML = btnHtml;
+        // Add logout handler
+        const logoutBtn = document.getElementById('logout-button');
+        if (logoutBtn) {
+            logoutBtn.onclick = () => {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            };
+        }
+    }
+
+    // Call this after login state changes
+    function updateNavOnAuth() {
+        let userData = null;
+        try { userData = JSON.parse(localStorage.getItem('currentUser')); } catch (e) {}
+        if (!userData || !userData.role) {
+            updateHomeNavForRole(null);
+        } else {
+            updateHomeNavForRole(userData.role);
+        }
+    }
+
+    // Call on page load and after login/logout
+    updateNavOnAuth();
+    window.addEventListener('storage', updateNavOnAuth);
+
     // --- Authentication UI update logic ---
     function updateAuthUI() {
         const authToken = localStorage.getItem('authToken');
