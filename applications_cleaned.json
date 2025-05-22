@@ -1,0 +1,11 @@
+[
+  {
+    "userId": 3,
+    "jobId": 1,
+    "coverLetter": "I am interested in this job.",
+    "applicantName": "Applicant User",
+    "applicantEmail": "applicant@example.com",
+    "status": "pending",
+    "appliedAt": "2025-05-20 10:00:00"
+  }
+]

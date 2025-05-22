@@ -30,8 +30,117 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+// --- API base path detection for local/cloud ---
+const isProd = window.location.hostname === 'adage.host';
+const API_BASE = isProd
+  ? 'https://adage.host/Job_for_Expats/api'
+  : '/api';
+
+// Keep a debug log of the API base path used - this helps debugging
+console.log('Using API base path:', API_BASE);
+
+// Function to check database connection status
+async function checkDatabaseConnection() {
+    try {
+        console.log('Checking database connection status...');
+        const response = await fetch(`${API_BASE}/dbstatus`);
+        const data = await response.json();
+        console.log('Database connection status:', data);
+        
+        // Create or update the status indicator
+        let statusIndicator = document.getElementById('db-status-indicator');
+        if (!statusIndicator) {
+            statusIndicator = document.createElement('div');
+            statusIndicator.id = 'db-status-indicator';
+            statusIndicator.style.position = 'fixed';
+            statusIndicator.style.bottom = '10px';
+            statusIndicator.style.right = '10px';
+            statusIndicator.style.padding = '8px 12px';
+            statusIndicator.style.borderRadius = '4px';
+            statusIndicator.style.fontSize = '12px';
+            statusIndicator.style.zIndex = '9999';
+            document.body.appendChild(statusIndicator);
+        }
+        
+        if (data.connected) {
+            statusIndicator.style.backgroundColor = '#4CAF50';
+            statusIndicator.style.color = 'white';
+            statusIndicator.innerHTML = '✓ Database Connected';
+            statusIndicator.title = `MongoDB connected at: ${data.timestamp}`;
+        } else {
+            statusIndicator.style.backgroundColor = '#F44336';
+            statusIndicator.style.color = 'white';
+            statusIndicator.innerHTML = '✗ Database Error';
+            statusIndicator.title = `Error: ${data.error || 'Unknown error'}\nTimestamp: ${data.timestamp}`;
+            
+            // Display a more prominent error message if jobs aren't loaded
+            const jobsContainer = document.getElementById('job-listings') || document.getElementById('jobs-container');
+            if (jobsContainer && jobsContainer.children.length === 0) {
+                jobsContainer.innerHTML = `
+                    <div class="error-message">
+                        <h3>Database Connection Error</h3>
+                        <p>${data.error || 'Could not connect to the database.'}</p>
+                        <div class="server-instructions">
+                            <h4>Possible Solutions:</h4>
+                            <ol>
+                                <li>Check MongoDB Atlas connection string in server.js</li>
+                                <li>Verify network rules allow connections from the server</li>
+                                <li>Ensure MongoDB Atlas account is active and not in free tier limits</li>
+                                <li>Check server logs for connection issues</li>
+                            </ol>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        // Click to show more details
+        statusIndicator.style.cursor = 'pointer';
+        statusIndicator.onclick = function() {
+            alert(`Database Status:\n
+Connection: ${data.connected ? 'Connected' : 'Disconnected'}
+Timestamp: ${data.timestamp}
+${data.error ? 'Error: ' + data.error : ''}`);
+        };
+        
+        return data.connected;
+    } catch (error) {
+        console.error('Failed to check database status:', error);
+        
+        // Create status indicator for connection failure
+        let statusIndicator = document.getElementById('db-status-indicator');
+        if (!statusIndicator) {
+            statusIndicator = document.createElement('div');
+            statusIndicator.id = 'db-status-indicator';
+            statusIndicator.style.position = 'fixed';
+            statusIndicator.style.bottom = '10px';
+            statusIndicator.style.right = '10px';
+            statusIndicator.style.padding = '8px 12px';
+            statusIndicator.style.borderRadius = '4px';
+            statusIndicator.style.fontSize = '12px';
+            statusIndicator.style.zIndex = '9999';
+            document.body.appendChild(statusIndicator);
+        }
+        
+        statusIndicator.style.backgroundColor = '#FF9800';
+        statusIndicator.style.color = 'white';
+        statusIndicator.innerHTML = '! API Connection Error';
+        statusIndicator.title = `Could not connect to API endpoint: ${API_BASE}/dbstatus`;
+        
+        return false;
+    }
+}
+
 // --- DOMContentLoaded main logic ---
 document.addEventListener('DOMContentLoaded', () => {
+    // Check database connection status
+    checkDatabaseConnection();
+    
+    // Set up periodic check for DB status in production (every 30 seconds)
+    if (isProd) {
+        setInterval(checkDatabaseConnection, 30000);
+    }
+    
     // DOM Elements
     const jobListingsSection = document.getElementById('job-listings');
     // Patch: Use job-listings as jobsContainer if jobs-container is null
@@ -187,42 +296,31 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             if (jobsLoading) jobsLoading.style.display = 'flex';
             if (jobsContainer) jobsContainer.innerHTML = '';
-            
             // Build query params
             let queryParams = new URLSearchParams({
                 page,
                 limit: 10,
                 ...filters
             });
-            
             // Add sort parameter
             if (sort === 'date-desc') {
                 queryParams.append('sort', 'postedAt:-1');
             } else if (sort === 'salary-desc') {
                 queryParams.append('sort', 'salary.min:-1');
             }
-            
-            const response = await fetch(`/api/jobs?${queryParams}`, {
-                // Adding a timeout to prevent long wait if server is down
+            const response = await fetch(`${API_BASE}/jobs?${queryParams}`, {
                 signal: AbortSignal.timeout(5000)
             }).catch(error => {
-                // This will catch network errors like server not running
                 throw new Error('Server connection failed. Please verify that the backend server is running.');
             });
-            
             if (!response.ok) {
                 throw new Error('Failed to fetch jobs');
             }
-            
             const data = await response.json();
-            
-            // Update state
             currentPage = data.currentPage;
             totalPages = data.totalPages;
-            
             displayJobListings(data.jobs);
             displayPagination(data.currentPage, data.totalPages);
-            
             return data;
         } catch (error) {
             console.error('Error fetching jobs:', error);
@@ -249,6 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayJobListings(jobs) {
+        if (!jobsContainer) return;
         if (jobs.length === 0) {
             jobsContainer.innerHTML = `
                 <div class="no-results">
@@ -258,14 +357,9 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             return;
         }
-        
-        jobsContainer.innerHTML = '';
-        
-        jobs.forEach(job => {
-            const jobElement = document.createElement('div');
-            jobElement.classList.add('job-listing');
-            
-            // Format salary range if available
+        jobsContainer.innerHTML = jobs.map(job => {
+            const postedDate = job.postedAt ? new Date(job.postedAt) : new Date();
+            const timeAgo = getTimeAgo(postedDate);
             let salaryDisplay = 'Not specified';
             if (job.salary && job.salary.min) {
                 salaryDisplay = job.salary.min.toLocaleString();
@@ -274,33 +368,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 salaryDisplay += ` ${job.salary.currency || 'HKD'}`;
                 if (job.salary.period === 'monthly') {
-                    salaryDisplay += ' per month';
+                    salaryDisplay += ' /month';
                 } else if (job.salary.period === 'annual') {
-                    salaryDisplay += ' per year';
+                    salaryDisplay += ' /year';
                 }
             }
-            
-            // Create posted date
-            const postedDate = job.postedAt ? new Date(job.postedAt) : new Date();
-            const timeAgo = getTimeAgo(postedDate);
-            
-            jobElement.innerHTML = `
-                <div class="job-listing-content">
-                    <h3 class="job-title">${job.title}</h3>
-                    <div class="company-name">${job.company}</div>
-                    <div class="job-meta">
-                        <span class="job-location"><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
-                        <span class="job-type"><i class="fas fa-briefcase"></i> ${capitalizeFirstLetter(job.type)}</span>
-                        <span class="job-salary"><i class="fas fa-money-bill-wave"></i> ${salaryDisplay}</span>
-                        <span class="job-posted"><i class="far fa-clock"></i> ${timeAgo}</span>
-                    </div>
+            return `
+            <div class="job-card-jobsdb">
+                <div class="job-title-jobsdb">${job.title}</div>
+                <div class="job-meta-jobsdb">${job.company} &middot; ${job.location} &middot; ${capitalizeFirstLetter(job.type) || ''}</div>
+                <div class="job-desc-jobsdb">${job.description ? job.description.substring(0, 120) + (job.description.length > 120 ? '...' : '') : ''}</div>
+                <div style="margin: 0.3rem 0 0.5rem 0;">
                     ${job.suitableForExpats ? '<span class="expat-friendly-badge">Expat Friendly</span>' : ''}
                     ${job.visaSponsorshipOffered ? '<span class="visa-sponsored-badge">Visa Sponsorship</span>' : ''}
                 </div>
+                <div class="job-footer-jobsdb">
+                    <span><i class="fas fa-money-bill-wave"></i> ${salaryDisplay}</span>
+                    <span><i class="far fa-clock"></i> ${timeAgo}</span>
+                    <button class="view-job-btn" data-job-id="${job.id || job._id}">View</button>
+                </div>
+            </div>
             `;
-            
-            jobElement.addEventListener('click', () => fetchAndDisplayJobDetails(job._id));
-            jobsContainer.appendChild(jobElement);
+        }).join('');
+        // Add event listeners to view buttons
+        document.querySelectorAll('.view-job-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const jobId = btn.getAttribute('data-job-id');
+                if (!jobId) return;
+                window.location.href = `job-details.html?job=${jobId}`;
+            });
         });
     }
       async function fetchAndDisplayJobDetails(jobId) {
@@ -308,17 +405,13 @@ document.addEventListener('DOMContentLoaded', () => {
             jobDetailsContent.innerHTML = `<div class="loading-spinner"></div>`;
             jobListingsSection.classList.add('hidden');
             jobDetailsSection.classList.remove('hidden');
-            
-            const response = await fetch(`/api/jobs/${jobId}`);
-            
+            const response = await fetch(`${API_BASE}/jobs/${jobId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch job details');
             }
-            
             const job = await response.json();
             currentSelectedJob = job;
             displayJobDetails(job);
-            
         } catch (error) {
             console.error('Error fetching job details:', error);
             jobDetailsContent.innerHTML = `<p class="error-message">Failed to load job details. Please try again later.</p>`;
@@ -444,7 +537,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const applicantEmail = userData.email || '';
                 const coverLetter = prompt('Enter a short cover letter for this job application:', '');
                 if (coverLetter === null) return;
-                fetch(`/api/jobs/${job._id}/apply`, {
+                fetch(`${API_BASE}/jobs/${job._id}/apply`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -531,7 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('job-listings')?.scrollIntoView({ behavior: 'smooth' });
         
         // Fetch jobs with the search term
-        fetch(`/api/jobs?search=${encodeURIComponent(searchTerm)}`)
+        fetch(`${API_BASE}/jobs?search=${encodeURIComponent(searchTerm)}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Search failed');
@@ -569,7 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('search-button').addEventListener('click', async () => {
             const searchTerm = searchBar.value.trim().toLowerCase();
             if (!searchTerm) return;
-            const response = await fetch(`/api/jobs?search=${encodeURIComponent(searchTerm)}`);
+            const response = await fetch(`${API_BASE}/jobs?search=${encodeURIComponent(searchTerm)}`);
             const data = await response.json();
             displayJobListings(data.jobs || []);
         });
@@ -622,7 +715,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const jobId = document.getElementById('job-id').value;
             const applicantName = document.getElementById('applicant-name').value;
             const applicantEmail = document.getElementById('applicant-email').value;
-
             console.log(`Applicant ${applicantName} (${applicantEmail}) applied for job ID ${jobId}`);
             alert('Application submitted successfully!');
             applicationForm.reset();
@@ -685,27 +777,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Logging in...';
                 }
-                const response = await fetch('/api/login', {
+                const response = await fetch(`${API_BASE}/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
                 });
                 const data = await response.json();
                 if (!response.ok) {
-                    // Show backend error message if available
                     throw new Error(data.message || 'Login failed. Please check your username and password, or ensure the backend server is running.');
                 }
                 authToken = data.token;
                 localStorage.setItem('authToken', authToken);
                 currentUser = jwt_decode(authToken);
-                // Store user info for role-based UI
                 if (data.user) {
                     localStorage.setItem('currentUser', JSON.stringify(data.user));
                 }
                 saveLoginAccount(username, role, data.token);
                 if (loginSection) loginSection.classList.add('hidden');
                 if (typeof updateAuthenticationUI === 'function') updateAuthenticationUI(true);
-                // Redirect to correct profile page after login
                 if (data.user && data.user.role === 'recruiter') {
                     window.location.href = 'recruiter-profile.html';
                 } else {
@@ -745,7 +834,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Registering...';
                 }
-                const response = await fetch('/api/register', {
+                const response = await fetch(`${API_BASE}/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password, role, name, email, nationality, currentLocation })
@@ -820,8 +909,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
                     try {
-                        // Fetch user profile to get appliedJobs
-                        const res = await fetch('/api/profile', { headers: { 'Authorization': `Bearer ${authToken}` } });
+                        const res = await fetch(`${API_BASE}/profile`, { headers: { 'Authorization': `Bearer ${authToken}` } });
                         if (!res.ok) throw new Error('Failed to load user profile');
                         const user = await res.json();
                         const appliedJobs = user.appliedJobs || [];
@@ -829,10 +917,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             window.applicationsContent.innerHTML = '<div>No applications found.</div>';
                             return;
                         }
-                        // Fetch job details for each applied job
                         const jobDetails = await Promise.all(
                             appliedJobs.map(async jobId => {
-                                const jobRes = await fetch(`/api/jobs/${jobId}`);
+                                const jobRes = await fetch(`${API_BASE}/jobs/${jobId}`);
                                 if (!jobRes.ok) return null;
                                 return await jobRes.json();
                             })
@@ -854,41 +941,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Add/updateAuthenticationUI for login/logout UI feedback ---
     function updateAuthenticationUI(isLoggedIn) {
         console.log('Updating authentication UI, isLoggedIn:', isLoggedIn);
-        
         // Login/Register buttons (shown when logged out)
         const loginBtn = document.getElementById('login-button');
         const registerBtn = document.getElementById('register-button');
         const recruiterLoginBtn = document.getElementById('recruiter-login-button');
         const recruiterRegisterBtn = document.getElementById('recruiter-register-button');
-        
         // Profile/Logout buttons (shown when logged in)
         const profileBtn = document.getElementById('profile-button');
         const logoutBtn = document.getElementById('logout-button');
-        
         // Get user role from localStorage or currentUser
         let userRole = null;
         let userData = null;
         try {
-            userData = JSON.parse(localStorage.getItem('currentUser'));
-        } catch (e) {}
-        if (!userData && typeof currentUser === 'object' && currentUser.role) {
-            userRole = currentUser.role;
-        } else if (userData && userData.role) {
+            const raw = localStorage.getItem('currentUser');
+            if (raw) userData = JSON.parse(raw);
+        } catch (e) { userData = null; }
+        if (userData && typeof userData === 'object' && userData.role) {
             userRole = userData.role;
+        } else if (typeof currentUser === 'object' && currentUser && currentUser.role) {
+            userRole = currentUser.role;
+        } else {
+            userRole = null;
         }
         // Set profile button href based on role
         if (profileBtn) {
             if (userRole === 'recruiter') {
                 profileBtn.href = 'recruiter-profile.html';
                 profileBtn.textContent = 'Recruiter Profile';
-            } else {
+            } else if (userRole === 'applicant') {
                 profileBtn.href = 'applicant-profile.html';
                 profileBtn.textContent = 'My Profile';
+            } else {
+                profileBtn.href = '#';
+                profileBtn.textContent = 'Profile';
             }
         }
         // --- Profile horizontal menu injection ---
         const profileMenuContainer = document.getElementById('profile-menu-container');
-        if (isLoggedIn && profileMenuContainer) {
+        if (isLoggedIn && profileMenuContainer && userRole) {
             let menuHtml = `<nav class='profile-nav-menu'>
                 <a href='index.html'>🏠 Home</a>
                 <a href='${userRole === 'recruiter' ? 'recruiter-profile.html' : 'applicant-profile.html'}'>👤 Profile</a>
@@ -914,37 +1004,33 @@ document.addEventListener('DOMContentLoaded', () => {
             [loginBtn, registerBtn, recruiterLoginBtn, recruiterRegisterBtn].forEach(btn => {
                 if (btn) {
                     btn.style.display = 'none';
-                    console.log(`Hidden button: ${btn.id}`);
+                    //console.log(`Hidden button: ${btn.id}`);
                 }
             });
-            
             // Show profile/logout buttons
             [profileBtn, logoutBtn].forEach(btn => {
                 if (btn) {
                     btn.style.display = '';
-                    console.log(`Shown button: ${btn.id}`);
+                    //console.log(`Shown button: ${btn.id}`);
                 }
             });
-            
-            console.log('UI updated for logged-in state');
+            //console.log('UI updated for logged-in state');
         } else {
             // Show login/register buttons
             [loginBtn, registerBtn, recruiterLoginBtn, recruiterRegisterBtn].forEach(btn => {
                 if (btn) {
                     btn.style.display = '';
-                    console.log(`Shown button: ${btn.id}`);
+                    //console.log(`Shown button: ${btn.id}`);
                 }
             });
-            
             // Hide profile/logout buttons
             [profileBtn, logoutBtn].forEach(btn => {
                 if (btn) {
                     btn.style.display = 'none';
-                    console.log(`Hidden button: ${btn.id}`);
+                    //console.log(`Hidden button: ${btn.id}`);
                 }
             });
-            
-            console.log('UI updated for logged-out state');
+            //console.log('UI updated for logged-out state');
         }
     }
 
@@ -1122,7 +1208,7 @@ document.addEventListener('DOMContentLoaded', () => {
             searchResultsContent.innerHTML = '<div class="loading-spinner"></div>';
             
             try {
-                const response = await fetch(`/api/jobs/search?q=${encodeURIComponent(query)}`);
+                const response = await fetch(`${API_BASE}/jobs/search?q=${encodeURIComponent(query)}`);
                 if (!response.ok) {
                     throw new Error('Failed to search jobs');
                 }
@@ -1221,21 +1307,24 @@ document.addEventListener('DOMContentLoaded', () => {
         let html = jobs.length ? jobs.map(job => `
             <div class="job-card-jobsdb">
                 <div class="job-title-jobsdb">${job.title}</div>
-                <div class="job-meta-jobsdb">${job.company} &middot; ${job.location} &middot; ${job.type || ''}</div>
+                <div class="job-meta-jobsdb">${job.company} &middot; ${job.location} &middot; ${capitalizeFirstLetter(job.type) || ''}</div>
                 <div class="job-desc-jobsdb">${job.description ? job.description.substring(0, 120) + (job.description.length > 120 ? '...' : '') : ''}</div>
+                <div style="margin: 0.3rem 0 0.5rem 0;">
+                    ${job.suitableForExpats ? '<span class="expat-friendly-badge">Expat Friendly</span>' : ''}
+                    ${job.visaSponsorshipOffered ? '<span class="visa-sponsored-badge">Visa Sponsorship</span>' : ''}
+                </div>
                 <div class="job-footer-jobsdb">
-                    <span>Posted: ${job.postedAt ? new Date(job.postedAt).toLocaleDateString() : ''}</span>
-                    <button class="view-job-btn" data-job-id="${job._id}">View</button>
+                    <span><i class="fas fa-money-bill-wave"></i> ${job.salary && job.salary.min ? job.salary.min.toLocaleString() + (job.salary.max ? ' - ' + job.salary.max.toLocaleString() : '') + ' ' + (job.salary.currency || 'HKD') : 'Not specified'}</span>
+                    <span><i class="far fa-clock"></i> ${job.postedAt ? new Date(job.postedAt).toLocaleDateString() : ''}</span>
+                    <button class="view-job-btn" data-job-id="${job.id || job._id}">View</button>
                 </div>
             </div>
         `).join('') : '<div style="padding:2rem;text-align:center;color:#888;">No jobs found.</div>';
         jobListings.innerHTML = html;
-        // Add event listeners to view buttons
         document.querySelectorAll('.view-job-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const jobId = btn.getAttribute('data-job-id');
                 if (!jobId) return;
-                // Redirect to a dedicated job details page
                 window.location.href = `job-details.html?job=${jobId}`;
             });
         });
@@ -1244,12 +1333,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function doSearch(query) {
         if (!jobListings) return;
         if (query && query.trim() !== '') {
-            fetch(`/api/jobs/search?q=${encodeURIComponent(query)}`)
+            fetch(`${API_BASE}/jobs/search?q=${encodeURIComponent(query)}`)
                 .then(res => res.json())
                 .then(jobs => renderJobs(Array.isArray(jobs) ? jobs : []))
                 .catch(() => renderJobs([]));
-        } else {
-            fetch('/api/jobs')
+        } else {            fetch(`${API_BASE}/jobs`)
                 .then(res => res.json())
                 .then(data => {
                     // If paginated, use data.jobs
@@ -1313,7 +1401,7 @@ document.addEventListener('DOMContentLoaded', () => {
         jobDetailsSection.classList.remove('hidden');
         jobDetailsContent.innerHTML = '<div class="loading-spinner"></div>';
         try {
-            const res = await fetch(`/api/jobs/${jobId}`);
+            const res = await fetch(`${API_BASE}/jobs/${jobId}`);
             if (!res.ok) throw new Error('Failed to load job details');
             const job = await res.json();
             // Render job details (simplified for brevity)
@@ -1334,7 +1422,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
                 // Call backend to apply
-                const res = await fetch(`/api/jobs/${jobId}/apply`, {
+                const res = await fetch(`${API_BASE}/jobs/${jobId}/apply`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });

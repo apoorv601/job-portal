@@ -10,9 +10,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const applicationsContent = document.getElementById('applications-content');
     applicationsContent.innerHTML = '<div class="loading-spinner"></div>';
     
+    const isProd = window.location.hostname === 'adage.host';
+    const API_BASE = isProd
+      ? 'https://adage.host/Job_for_Expats/api'
+      : '/api';
+    console.log('Using API base path:', API_BASE);
+    
     try {
         // Fetch applications directly from the applications API
-        const res = await fetch('/api/applications/my', { 
+        const res = await fetch(`${API_BASE}/applications/my`, { 
             headers: { 'Authorization': `Bearer ${authToken}` } 
         });
         

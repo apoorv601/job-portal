@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "682ba77440e8907055d11dd4"
+  },
+  "applicantId": {
+    "$oid": "682af7d796e02ef99306e530"
+  },
+  "jobId": {
+    "$oid": "682af7d796e02ef99306e54e"
+  },
+  "jobTitle": "ESL Teacher",
+  "status": "Submitted",
+  "coverLetter": "",
+  "applicantName": "",
+  "applicantEmail": "",
+  "createdAt": {
+    "$date": "2025-05-19T21:49:40.785Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682ba7cb40e8907055d11ef0"
+  },
+  "applicantId": {
+    "$oid": "682b0db0b1a4682b1af97101"
+  },
+  "jobId": {
+    "$oid": "682af7d796e02ef99306e550"
+  },
+  "jobTitle": "Hotel Guest Relations Manager",
+  "status": "Submitted",
+  "coverLetter": "",
+  "applicantName": "",
+  "applicantEmail": "",
+  "createdAt": {
+    "$date": "2025-05-19T21:51:07.120Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682ba7d740e8907055d11f55"
+  },
+  "applicantId": {
+    "$oid": "682b0db0b1a4682b1af97101"
+  },
+  "jobId": {
+    "$oid": "682b22b80f6a2cee3f465903"
+  },
+  "jobTitle": "Senior Soft Engineer",
+  "status": "Submitted",
+  "coverLetter": "",
+  "applicantName": "",
+  "applicantEmail": "",
+  "createdAt": {
+    "$date": "2025-05-19T21:51:19.337Z"
+  },
+  "__v": 0
+}]

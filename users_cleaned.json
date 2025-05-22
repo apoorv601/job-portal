@@ -1,0 +1,74 @@
+[
+  {
+    "_id": "682af7d696e02ef99306e52e",
+    "username": "admin",
+    "password": "$2a$10$dummyhash",
+    "role": "admin",
+    "profile": {
+      "name": "Admin User",
+      "email": "admin@example.com",
+      "phone": "1234567890",
+      "nationality": "Hong Kong",
+      "currentLocation": "Hong Kong",
+      "visaStatus": "Resident",
+      "yearsOfExperience": 10,
+      "skills": [
+        "Management",
+        "Leadership"
+      ],
+      "education": [],
+      "workExperience": []
+    },
+    "createdAt": "2025-05-20T10:00:00.000Z",
+    "lastLogin": null,
+    "__v": 0
+  },
+  {
+    "_id": "682af7d796e02ef99306e52f",
+    "username": "recruiter",
+    "password": "$2a$10$dummyhash",
+    "role": "recruiter",
+    "profile": {
+      "name": "Recruiter User",
+      "email": "recruiter@example.com",
+      "phone": "9876543210",
+      "nationality": "Hong Kong",
+      "currentLocation": "Hong Kong",
+      "visaStatus": "Resident",
+      "yearsOfExperience": 5,
+      "skills": [
+        "Recruitment",
+        "HR"
+      ],
+      "education": [],
+      "workExperience": []
+    },
+    "createdAt": "2025-05-20T10:00:00.000Z",
+    "lastLogin": null,
+    "__v": 0
+  },
+  {
+    "_id": "682af7d796e02ef99306e530",
+    "username": "applicant",
+    "password": "$2a$10$dummyhash",
+    "role": "applicant",
+    "profile": {
+      "name": "Applicant User",
+      "email": "applicant@example.com",
+      "phone": "5555555555",
+      "nationality": "USA",
+      "currentLocation": "New York",
+      "visaStatus": "Seeking",
+      "yearsOfExperience": 2,
+      "skills": [
+        "JavaScript",
+        "Node.js"
+      ],
+      "education": [],
+      "workExperience": []
+    },
+    "createdAt": "2025-05-20T10:00:00.000Z",
+    "lastLogin": null,
+    "__v": 0
+  }
+]

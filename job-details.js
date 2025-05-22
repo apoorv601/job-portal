@@ -1,6 +1,15 @@
 // job-details.js
 // Loads job details and allows applicant to apply
 
+// --- API base path detection for local/cloud ---
+const isProd = window.location.hostname === 'adage.host';
+const API_BASE = isProd
+  ? 'https://adage.host/Job_for_Expats/api'
+  : '/api';
+
+// Keep a debug log of the API base path used - this helps debugging
+console.log('Using API base path:', API_BASE);
+
 document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const jobId = urlParams.get('job');
@@ -11,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     jobDetailsContent.innerHTML = '<div class="loading-spinner"></div>';
     try {
-        const res = await fetch(`/api/jobs/${jobId}`);
+        const res = await fetch(`${API_BASE}/jobs/${jobId}`);
         if (!res.ok) throw new Error('Failed to load job details');
         const job = await res.json();
         // Format salary

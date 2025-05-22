@@ -1,0 +1,102 @@
+[{
+  "_id": {
+    "$oid": "682af7d796e02ef99306e540"
+  },
+  "name": "Hong Kong Tech Innovators",
+  "description": "A leading technology company specializing in innovative solutions for businesses in Asia.",
+  "industry": "it",
+  "website": "https://www.hktech.example.com",
+  "size": "50-200 employees",
+  "founded": 2010,
+  "address": {
+    "street": "123 Innovation Drive",
+    "district": "Central",
+    "city": "Hong Kong",
+    "country": "Hong Kong",
+    "postalCode": "123456"
+  },
+  "contactPerson": {
+    "name": "Sarah Wong",
+    "email": "recruiter@hkexpatjobs.com",
+    "phone": "+852 5555 1234",
+    "position": "HR Manager"
+  },
+  "socialMedia": {
+    "linkedin": "https://www.linkedin.com/company/hktechinnovators",
+    "facebook": "https://www.facebook.com/hktechinnovators"
+  },
+  "benefits": [
+    "Competitive salary packages",
+    "Medical insurance",
+    "Annual performance bonuses",
+    "Professional development opportunities",
+    "Flexible working hours"
+  ],
+  "culture": "We foster an inclusive, innovative culture where diverse perspectives are valued and employees are encouraged to think outside the box.",
+  "photos": [],
+  "internationalOffices": [
+    "Singapore",
+    "Tokyo",
+    "Shanghai"
+  ],
+  "recruiterId": {
+    "$oid": "682af7d796e02ef99306e52f"
+  },
+  "verified": true,
+  "createdAt": {
+    "$date": "2025-05-19T09:20:23.242Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682af7d796e02ef99306e541"
+  },
+  "name": "Global Finance HK",
+  "description": "A multinational financial institution providing comprehensive banking and investment services across Asia.",
+  "industry": "finance",
+  "website": "https://www.globalfinancehk.example.com",
+  "size": "500+ employees",
+  "founded": 2005,
+  "address": {
+    "street": "888 Finance Street",
+    "district": "Wan Chai",
+    "city": "Hong Kong",
+    "country": "Hong Kong",
+    "postalCode": "567890"
+  },
+  "contactPerson": {
+    "name": "Sarah Wong",
+    "email": "recruiter@hkexpatjobs.com",
+    "phone": "+852 5555 1234",
+    "position": "Talent Acquisition Manager"
+  },
+  "socialMedia": {
+    "linkedin": "https://www.linkedin.com/company/globalfinancehk",
+    "twitter": "https://www.twitter.com/globalfinancehk"
+  },
+  "benefits": [
+    "Competitive remuneration package",
+    "Annual bonus scheme",
+    "Comprehensive health benefits",
+    "Retirement plan",
+    "Global mobility opportunities"
+  ],
+  "culture": "We maintain a professional, fast-paced environment with a strong emphasis on excellence, integrity, and global collaboration.",
+  "photos": [],
+  "internationalOffices": [
+    "New York",
+    "London",
+    "Sydney",
+    "Singapore",
+    "Shanghai"
+  ],
+  "recruiterId": {
+    "$oid": "682af7d796e02ef99306e52f"
+  },
+  "verified": true,
+  "createdAt": {
+    "$date": "2025-05-19T09:20:23.245Z"
+  },
+  "__v": 0
+}]

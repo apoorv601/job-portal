@@ -1,0 +1,36 @@
+[
+  {
+    "_id": "682af7d796e02ef99306e540",
+    "name": "Tech Innovators",
+    "description": "A leading tech company in Hong Kong.",
+    "industry": "IT",
+    "website": "https://techinnovators.example.com",
+    "size": "50-200",
+    "founded": 2015,
+    "address": {
+      "street": "123 Main St",
+      "city": "Hong Kong"
+    },
+    "contactPerson": {
+      "name": "Sarah Wong",
+      "email": "recruiter@example.com"
+    },
+    "socialMedia": {
+      "linkedin": "https://linkedin.com/company/techinnovators"
+    },
+    "benefits": [
+      "Health Insurance",
+      "Remote Work"
+    ],
+    "culture": "Innovative and inclusive.",
+    "photos": [],
+    "internationalOffices": [
+      "Singapore",
+      "Tokyo"
+    ],
+    "recruiterId": 2,
+    "verified": true,
+    "createdAt": "2025-05-20 10:00:00",
+    "__v": 0
+  }
+]

@@ -1,0 +1,481 @@
+[{
+  "_id": {
+    "$oid": "682af7d796e02ef99306e545"
+  },
+  "title": "Senior Full Stack Developer",
+  "company": "Hong Kong Tech Innovators",
+  "location": "Central, Hong Kong",
+  "district": "Central",
+  "type": "full-time",
+  "industry": "it",
+  "category": "Software Development",
+  "description": "We are looking for an experienced Full Stack Developer to join our innovative team in Hong Kong. The ideal candidate will have experience with modern web technologies and be comfortable working in a fast-paced environment.",
+  "responsibilities": [
+    "Design and develop high-quality applications using React.js and Node.js",
+    "Collaborate with cross-functional teams to define, design, and ship new features",
+    "Write clean, maintainable, and efficient code",
+    "Implement responsive design and ensure cross-browser compatibility",
+    "Optimize applications for maximum performance and scalability"
+  ],
+  "requirements": [
+    "Bachelor's degree in Computer Science or related field",
+    "At least 5 years of experience in full-stack development",
+    "Strong proficiency in JavaScript, including DOM manipulation and the JavaScript object model",
+    "Experience with React.js and Node.js",
+    "Familiarity with RESTful APIs and modern authorization mechanisms",
+    "Understanding of server-side templating languages"
+  ],
+  "qualifications": [],
+  "salary": {
+    "min": 45000,
+    "max": 60000,
+    "currency": "HKD",
+    "period": "monthly"
+  },
+  "benefits": [
+    "Competitive salary",
+    "Medical insurance",
+    "Performance bonuses",
+    "Professional development opportunities",
+    "Flexible working hours"
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "proficiency": "Professional",
+      "_id": {
+        "$oid": "682af7d796e02ef99306e546"
+      }
+    },
+    {
+      "language": "Cantonese",
+      "proficiency": "Basic",
+      "_id": {
+        "$oid": "682af7d796e02ef99306e547"
+      }
+    }
+  ],
+  "requiredExperience": 5,
+  "visaSponsorshipOffered": true,
+  "postedBy": {
+    "$oid": "682af7d796e02ef99306e52f"
+  },
+  "postedAt": {
+    "$date": "2025-05-16T09:20:23.253Z"
+  },
+  "suitableForExpats": true,
+  "featuredJob": true,
+  "applicants": [
+    {
+      "userId": {
+        "$oid": "682af7d796e02ef99306e530"
+      },
+      "status": "Applied",
+      "appliedAt": {
+        "$date": "2025-05-19T12:00:18.067Z"
+      },
+      "_id": {
+        "$oid": "682b1d5209fdf37ceaaa77d2"
+      }
+    }
+  ],
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "682af7d796e02ef99306e548"
+  },
+  "title": "Marketing Manager",
+  "company": "Hong Kong Tech Innovators",
+  "location": "Central, Hong Kong",
+  "district": "Central",
+  "type": "full-time",
+  "industry": "it",
+  "category": "Marketing",
+  "description": "We're seeking a talented Marketing Manager to lead our marketing initiatives in the APAC region. This role is perfect for someone who is creative, data-driven, and experienced in technology marketing.",
+  "responsibilities": [
+    "Develop and implement comprehensive marketing strategies",
+    "Manage digital marketing campaigns across various channels",
+    "Analyze market trends and competitor activities",
+    "Create engaging content for various platforms",
+    "Work with sales team to generate leads and drive conversions"
+  ],
+  "requirements": [
+    "Bachelor's degree in Marketing, Business Administration, or related field",
+    "3-5 years of experience in marketing, preferably in the tech industry",
+    "Strong understanding of digital marketing concepts and best practices",
+    "Excellent analytical skills with the ability to use data to inform decisions",
+    "Outstanding communication and presentation skills"
+  ],
+  "qualifications": [],
+  "salary": {
+    "min": 35000,
+    "max": 45000,
+    "currency": "HKD",
+    "period": "monthly"
+  },
+  "benefits": [
+    "Competitive salary",
+    "Medical insurance",
+    "Performance bonuses",
+    "Professional development budget",
+    "Team building activities"
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "proficiency": "Professional",
+      "_id": {
+        "$oid": "682af7d796e02ef99306e549"
+      }
+    },
+    {
+      "language": "Cantonese",
+      "proficiency": "Intermediate",
+      "_id": {
+        "$oid": "682af7d796e02ef99306e54a"
+      }
+    }
+  ],
+  "requiredExperience": 3,
+  "visaSponsorshipOffered": false,
+  "postedBy": {
+    "$oid": "682af7d796e02ef99306e52f"
+  },
+  "postedAt": {
+    "$date": "2025-05-14T09:20:23.254Z"
+  },
+  "suitableForExpats": true,
+  "featuredJob": false,
+  "applicants": [
+    {
+      "userId": {
+        "$oid": "682b0db0b1a4682b1af97101"
+      },
+      "status": "Applied",
+      "appliedAt": {
+        "$date": "2025-05-19T11:03:28.428Z"
+      },
+      "_id": {
+        "$oid": "682b1000b1a4682b1af97142"
+      }
+    }
+  ],
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "682af7d796e02ef99306e54b"
+  },
+  "title": "Financial Analyst",
+  "company": "Global Finance HK",
+  "location": "Wan Chai, Hong Kong",
+  "district": "Wan Chai",
+  "type": "full-time",
+  "industry": "finance",
+  "category": "Finance",
+  "description": "Global Finance HK is seeking a detail-oriented Financial Analyst to join our expanding team in Hong Kong. This role involves analyzing financial data, preparing reports, and supporting key investment decisions.",
+  "responsibilities": [
+    "Analyze financial information to produce forecasts on business performance",
+    "Create financial models and provide investment recommendations",
+    "Prepare monthly, quarterly, and annual financial reports",
+    "Monitor economic trends in the APAC region",
+    "Support senior management with financial planning and analysis"
+  ],
+  "requirements": [
+    "Bachelor's degree in Finance, Economics, Accounting, or related field",
+    "At least 2 years of experience in financial analysis",
+    "Strong proficiency in Excel and financial modeling",
+    "Knowledge of financial markets and investment principles",
+    "CFA designation or progress toward certification is a plus"
+  ],
+  "qualifications": [],
+  "salary": {
+    "min": 30000,
+    "max": 40000,
+    "currency": "HKD",
+    "period": "monthly"
+  },
+  "benefits": [
+    "Competitive salary package",
+    "Annual bonus potential",
+    "Comprehensive health benefits",
+    "Retirement plan",
+    "Professional certification support"
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "proficiency": "Professional",
+      "_id": {
+        "$oid": "682af7d796e02ef99306e54c"
+      }
+    },
+    {
+      "language": "Mandarin",
+      "proficiency": "Intermediate",
+      "_id": {
+        "$oid": "682af7d796e02ef99306e54d"
+      }
+    }
+  ],
+  "requiredExperience": 2,
+  "visaSponsorshipOffered": true,
+  "postedBy": {
+    "$oid": "682af7d796e02ef99306e52f"
+  },
+  "postedAt": {
+    "$date": "2025-05-12T09:20:23.257Z"
+  },
+  "suitableForExpats": true,
+  "featuredJob": false,
+  "applicants": [
+    {
+      "userId": {
+        "$oid": "682af7d796e02ef99306e530"
+      },
+      "status": "Applied",
+      "appliedAt": {
+        "$date": "2025-05-19T12:07:28.774Z"
+      },
+      "_id": {
+        "$oid": "682b1f0009fdf37ceaaa789c"
+      }
+    }
+  ],
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "682af7d796e02ef99306e54e"
+  },
+  "title": "ESL Teacher",
+  "company": "International Education Center",
+  "location": "Kowloon, Hong Kong",
+  "district": "Kowloon",
+  "type": "full-time",
+  "industry": "education",
+  "category": "Teaching",
+  "description": "International Education Center is looking for passionate ESL teachers to join our team in Hong Kong. You will be teaching English to students of various age groups and proficiency levels.",
+  "responsibilities": [
+    "Teach English to students of different age groups and levels",
+    "Prepare lesson plans and teaching materials",
+    "Assess student progress and provide regular feedback",
+    "Participate in school events and activities",
+    "Collaborate with other teachers and staff members"
+  ],
+  "requirements": [
+    "Bachelor's degree in any field",
+    "TEFL/TESOL certification",
+    "Native English speaker or equivalent proficiency",
+    "Teaching experience is preferred but not required",
+    "Passion for teaching and cultural exchange"
+  ],
+  "qualifications": [],
+  "salary": {
+    "min": 25000,
+    "max": 30000,
+    "currency": "HKD",
+    "period": "monthly"
+  },
+  "benefits": [
+    "Housing allowance",
+    "Flight reimbursement",
+    "Medical insurance",
+    "Contract completion bonus",
+    "Professional development opportunities"
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "proficiency": "Native",
+      "_id": {
+        "$oid": "682af7d796e02ef99306e54f"
+      }
+    }
+  ],
+  "requiredExperience": 0,
+  "visaSponsorshipOffered": true,
+  "postedBy": {
+    "$oid": "682af7d796e02ef99306e52f"
+  },
+  "postedAt": {
+    "$date": "2025-05-09T09:20:23.258Z"
+  },
+  "suitableForExpats": true,
+  "featuredJob": false,
+  "applicants": [
+    {
+      "userId": {
+        "$oid": "682af7d796e02ef99306e530"
+      },
+      "status": "Applied",
+      "appliedAt": {
+        "$date": "2025-05-19T21:49:40.777Z"
+      },
+      "_id": {
+        "$oid": "682ba77440e8907055d11dce"
+      }
+    }
+  ],
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "682af7d796e02ef99306e550"
+  },
+  "title": "Hotel Guest Relations Manager",
+  "company": "Luxury Bay Hotel",
+  "location": "Tsim Sha Tsui, Hong Kong",
+  "district": "Tsim Sha Tsui",
+  "type": "full-time",
+  "industry": "hospitality",
+  "category": "Hotel Management",
+  "description": "Luxury Bay Hotel is seeking an experienced Guest Relations Manager to ensure exceptional guest experiences at our 5-star property in the heart of Hong Kong.",
+  "responsibilities": [
+    "Manage and enhance guest experiences from check-in to check-out",
+    "Address guest inquiries, requests, and complaints promptly",
+    "Coordinate with various hotel departments to fulfill guest needs",
+    "Train and supervise guest relations staff",
+    "Implement strategies to improve guest satisfaction and loyalty"
+  ],
+  "requirements": [
+    "Bachelor's degree in Hospitality Management or related field",
+    "At least 3 years of experience in guest relations at a 4-5 star hotel",
+    "Excellent communication and interpersonal skills",
+    "Problem-solving abilities and attention to detail",
+    "Flexibility to work different shifts including weekends and holidays"
+  ],
+  "qualifications": [],
+  "salary": {
+    "min": 28000,
+    "max": 35000,
+    "currency": "HKD",
+    "period": "monthly"
+  },
+  "benefits": [
+    "Competitive salary",
+    "Meal allowance",
+    "Medical insurance",
+    "Hotel stay discounts worldwide",
+    "Career advancement opportunities"
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "proficiency": "Professional",
+      "_id": {
+        "$oid": "682af7d796e02ef99306e551"
+      }
+    },
+    {
+      "language": "Cantonese",
+      "proficiency": "Basic",
+      "_id": {
+        "$oid": "682af7d796e02ef99306e552"
+      }
+    },
+    {
+      "language": "Mandarin",
+      "proficiency": "Intermediate",
+      "_id": {
+        "$oid": "682af7d796e02ef99306e553"
+      }
+    }
+  ],
+  "requiredExperience": 3,
+  "visaSponsorshipOffered": true,
+  "postedBy": {
+    "$oid": "682af7d796e02ef99306e52f"
+  },
+  "postedAt": {
+    "$date": "2025-05-17T09:20:23.259Z"
+  },
+  "suitableForExpats": true,
+  "featuredJob": false,
+  "applicants": [
+    {
+      "userId": {
+        "$oid": "682af7d796e02ef99306e530"
+      },
+      "status": "Applied",
+      "appliedAt": {
+        "$date": "2025-05-19T11:55:28.715Z"
+      },
+      "_id": {
+        "$oid": "682b1c3009fdf37ceaaa76b8"
+      }
+    },
+    {
+      "userId": {
+        "$oid": "682b0db0b1a4682b1af97101"
+      },
+      "status": "Applied",
+      "appliedAt": {
+        "$date": "2025-05-19T21:51:07.118Z"
+      },
+      "_id": {
+        "$oid": "682ba7cb40e8907055d11eee"
+      }
+    }
+  ],
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "682b22b80f6a2cee3f465903"
+  },
+  "title": "Senior Soft Engineer",
+  "company": "ABC corp",
+  "location": "HK",
+  "type": "full-time",
+  "industry": "finance",
+  "description": "Job abt Senior Soft Engineer",
+  "responsibilities": [
+    "Job abt Senior Soft Engineer"
+  ],
+  "requirements": [
+    "Job abt Senior Soft Engineer"
+  ],
+  "qualifications": [],
+  "salary": {
+    "min": 40000,
+    "max": 50000,
+    "period": "monthly",
+    "currency": "HKD"
+  },
+  "benefits": [],
+  "languages": [
+    {
+      "language": "English",
+      "proficiency": "Professional",
+      "_id": {
+        "$oid": "682b22b80f6a2cee3f465904"
+      }
+    }
+  ],
+  "visaSponsorshipOffered": true,
+  "postedBy": {
+    "$oid": "682b08c4e9e06c3a2dc73ec5"
+  },
+  "suitableForExpats": true,
+  "featuredJob": false,
+  "applicants": [
+    {
+      "userId": {
+        "$oid": "682b0db0b1a4682b1af97101"
+      },
+      "status": "Applied",
+      "appliedAt": {
+        "$date": "2025-05-19T21:51:19.336Z"
+      },
+      "_id": {
+        "$oid": "682ba7d740e8907055d11f53"
+      }
+    }
+  ],
+  "postedAt": {
+    "$date": "2025-05-19T12:23:20.433Z"
+  },
+  "__v": 1
+}]

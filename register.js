@@ -20,8 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please fill in all required fields');
             return;
         }
+        const isProd = window.location.hostname === 'adage.host';
+        const API_BASE = isProd
+          ? 'https://adage.host/Job_for_Expats/api'
+          : '/api';
+        console.log('Using API base path:', API_BASE);
         try {
-            const response = await fetch('/api/register', {
+            const response = await fetch(`${API_BASE}/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

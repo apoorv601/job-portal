@@ -1,44 +1,28 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
+const sequelize = require('./sequelize');
 const User = require('./models/User');
 const Job = require('./models/Job');
 const Company = require('./models/Company');
 const Application = require('./models/Application');
 
+// Associations
+User.hasMany(Application, { foreignKey: 'userId' });
+Application.belongsTo(User, { foreignKey: 'userId' });
+Job.hasMany(Application, { foreignKey: 'jobId' });
+Application.belongsTo(Job, { foreignKey: 'jobId' });
+Company.hasMany(Job, { foreignKey: 'companyId' });
+Job.belongsTo(Company, { foreignKey: 'companyId' });
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = 'your_jwt_secret'; // In production, use environment variable
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/expat_job_portal';
-
-mongoose.connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
-    connectTimeoutMS: 10000, // Give up initial connection after 10s
-})
-
-.then(() => {
-    console.log('MongoDB Connected Successfully');
-    console.log('Database is ready to store and retrieve job data');
-})
-.catch(err => {
-    console.error('MongoDB Connection Error:', err);
-    console.error('Please make sure MongoDB is installed and running on your machine.');
-    console.error('\nTry these solutions:');
-    console.error('1. Install MongoDB Community Edition: https://www.mongodb.com/try/download/community');
-    console.error('2. Or use MongoDB in Docker: docker run -d -p 27017:27017 --name mongodb mongo');
-    console.error('3. Start MongoDB service if already installed');
-    console.error('4. Or use MongoDB Atlas (cloud) and update the connection string');
-    console.error('\nRun setup-mongodb.bat (Windows) or setup-mongodb.sh (Unix/Mac) for guided setup');
-    console.error('\nThe app will continue to run but database functionality will not work.');
-});
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -60,7 +44,36 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
-app.use(express.static(path.join(__dirname, '../')));
+
+// Serve frontend files from Job_Portal root (parent of backend)
+const frontendBuildPath = path.join(__dirname, '..');
+const BASE_PATH = process.env.BASE_PATH || (process.env.NODE_ENV === 'production' ? '/Job_for_Expats' : '/');
+
+if (fs.existsSync(path.join(frontendBuildPath, 'index.html'))) {
+    app.use(BASE_PATH, express.static(frontendBuildPath));
+    // SPA fallback: serve index.html for any non-API, non-upload route under BASE_PATH
+    app.get(`${BASE_PATH}*`, (req, res, next) => {
+        if (!req.path.startsWith(`${BASE_PATH}api`) && !req.path.startsWith(`${BASE_PATH}uploads`)) {
+            res.sendFile(path.join(frontendBuildPath, 'index.html'));
+        } else {
+            next();
+        }
+    });
+}
+
+// Remove or comment out this route to allow frontend SPA to handle /Job_for_Expats
+// app.get('/Job_for_Expats', (req, res) => {
+//     res.send('Job for Expats route is working!');
+// });
+
+// DB Status endpoint - does not require authentication
+app.get('/api/dbstatus', (req, res) => {
+    res.json({
+        connected: true, // If server is running, MariaDB is connected
+        error: null,
+        timestamp: new Date().toISOString()
+    });
+});
 
 // Authentication middleware
 const auth = (req, res, next) => {
@@ -86,90 +99,85 @@ const authorize = (roles) => {
 
 // User registration
 app.post('/api/register', async (req, res) => {
+    const { username, password, role, name, email, nationality, currentLocation } = req.body;
     try {
-        const { username, password, role, name, email, nationality, currentLocation } = req.body;
-        
-        // Check if username already exists
-        const existingUser = await User.findOne({ username });
-        if (existingUser) {
+        const existing = await User.findOne({ where: { username } });
+        if (existing) {
             return res.status(400).json({ message: 'Username already exists' });
         }
-        
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ 
-            username, 
-            password: hashedPassword, 
-            role, 
-            profile: { 
-                name, 
-                email,
-                nationality,
-                currentLocation
-            }
+        const hashed = await bcrypt.hash(password, 10);
+        const user = await User.create({
+            username,
+            password: hashed,
+            role,
+            name,
+            email,
+            nationality,
+            currentLocation
         });
-        await user.save();
-        res.status(201).json({ message: 'User registered successfully' });
-    } catch (error) {
-        res.status(500).json({ message: 'Registration failed', error: error.message });
+        res.json({ success: true, user });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 });
 
 // User login
 app.post('/api/login', async (req, res) => {
+    const { username, password } = req.body;
     try {
-        const { username, password } = req.body;
-        const user = await User.findOne({ username });
-        if (!user || !(await bcrypt.compare(password, user.password))) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+        const user = await User.findOne({ where: { username } });
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid username or password' });
         }
-        
-        // Update last login time
-        user.lastLogin = new Date();
-        await user.save();
-        
-        const token = jwt.sign({ 
-            userId: user._id, 
-            role: user.role,
-            username: user.username
-        }, JWT_SECRET, { expiresIn: '24h' });
-        
-        res.json({ 
-            token,
-            user: {
-                id: user._id,
-                username: user.username,
-                role: user.role,
-                name: user.profile.name
-            }
-        });
-    } catch (error) {
-        res.status(500).json({ message: 'Login failed', error: error.message });
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Invalid username or password' });
+        }
+        const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+        res.json({ token, user });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 });
 
-// Get user profile
+// Get user profile (MariaDB/Sequelize version, return profile object for frontend)
 app.get('/api/profile', auth, async (req, res) => {
     try {
-        const user = await User.findById(req.user.userId);
+        const user = await User.findByPk(req.user.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.json(user);
+        // Return a profile object for compatibility
+        res.json({
+            id: user.id,
+            username: user.username,
+            role: user.role,
+            profile: {
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                nationality: user.nationality,
+                currentLocation: user.currentLocation,
+                skills: user.skills ? JSON.parse(user.skills) : [],
+                languages: user.languages ? JSON.parse(user.languages) : [],
+                workExperience: user.workExperience ? JSON.parse(user.workExperience) : [],
+                education: user.education ? JSON.parse(user.education) : [],
+                resume: user.resume,
+                photo: user.photo
+            }
+        });
     } catch (error) {
         res.status(500).json({ message: 'Error fetching profile', error: error.message });
     }
 });
 
-// Update user profile
+// Update user profile (MariaDB/Sequelize version)
 app.put('/api/profile', auth, async (req, res) => {
     try {
         const { profile } = req.body;
-        const user = await User.findByIdAndUpdate(
-            req.user.userId,
-            { $set: { profile } },
-            { new: true }
-        );
-        res.json(user);
+        await User.update(profile, { where: { id: req.user.id } });
+        const updatedUser = await User.findByPk(req.user.id);
+        res.json(updatedUser);
     } catch (error) {
         res.status(500).json({ message: 'Error updating profile', error: error.message });
     }
@@ -199,6 +207,16 @@ app.post('/api/upload/photo', auth, upload.single('photo'), async (req, res) => 
     }
 });
 
+// POST /api/jobs (MariaDB/Sequelize version)
+app.post('/api/jobs', async (req, res) => {
+  try {
+    const job = await Job.create(req.body);
+    res.json({ success: true, job });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Post a job
 app.post('/api/jobs', auth, authorize(['recruiter', 'admin']), async (req, res) => {
     try {
@@ -218,94 +236,49 @@ app.post('/api/jobs', auth, authorize(['recruiter', 'admin']), async (req, res) 
 app.get('/api/jobs/search', async (req, res) => {
     try {
         const { q: query } = req.query;
-        if (!query || query.trim() === '') {
-            // Return latest jobs if no query
-            const jobs = await Job.find({}).sort({ postedAt: -1 }).limit(20).lean();
-            return res.json(jobs);
+        const where = {};
+        if (query && query.trim() !== '') {
+            where[sequelize.Sequelize.Op.or] = [
+                { title: { [sequelize.Sequelize.Op.like]: `%${query}%` } },
+                { company: { [sequelize.Sequelize.Op.like]: `%${query}%` } },
+                { industry: { [sequelize.Sequelize.Op.like]: `%${query}%` } },
+                { description: { [sequelize.Sequelize.Op.like]: `%${query}%` } }
+            ];
         }
-        // Use MongoDB text search with the text index we've already defined in the Job schema
-        const jobs = await Job.find(
-            { 
-                $text: { $search: query },
-                // Only include non-expired jobs
-                $or: [
-                    { expiryDate: { $gt: new Date() } },
-                    { expiryDate: { $exists: false } }
-                ]
-            },
-            // Add a relevance score
-            { score: { $meta: "textScore" } }
-        )
-        .sort({ score: { $meta: "textScore" } }) // Sort by relevance
-        .limit(20) // Limit to top 20 most relevant results
-        .lean();
-        
-        // If text search doesn't find enough results, try a more flexible search
-        if (jobs.length < 5) {
-            const keywordJobs = await Job.find({
-                $or: [
-                    { title: { $regex: query, $options: 'i' } },
-                    { company: { $regex: query, $options: 'i' } },
-                    { industry: { $regex: query, $options: 'i' } },
-                    { category: { $regex: query, $options: 'i' } },
-                    { description: { $regex: query, $options: 'i' } }
-                ],
-                // Only include non-expired jobs
-                $and: [
-                    {
-                        $or: [
-                            { expiryDate: { $gt: new Date() } },
-                            { expiryDate: { $exists: false } }
-                        ]
-                    }
-                ]
-            })
-            .limit(20)
-            .lean();
-            
-            // Combine and deduplicate results
-            const combinedJobs = [...jobs];
-            const existingIds = new Set(jobs.map(job => job._id.toString()));
-            
-            keywordJobs.forEach(job => {
-                if (!existingIds.has(job._id.toString())) {
-                    combinedJobs.push(job);
-                    existingIds.add(job._id.toString());
-                }
-            });
-            
-            return res.json(combinedJobs);
-        }
-        
+        const jobs = await Job.findAll({
+            where,
+            order: [['postedAt', 'DESC']],
+            limit: 20
+        });
         res.json(jobs);
     } catch (error) {
         res.status(500).json({ message: 'Failed to search jobs', error: error.message });
     }
 });
 
-// Get jobs posted by the current user
+// Get jobs posted by the current user (MariaDB/Sequelize version)
 app.get('/api/jobs/my', auth, authorize(['recruiter']), async (req, res) => {
     try {
-        const jobs = await Job.find({ postedBy: req.user.userId })
-            .sort({ postedAt: -1 }) // Most recent first
-            .lean();
-        
+        const jobs = await Job.findAll({
+            where: { recruiterId: req.user.userId },
+            order: [['postedAt', 'DESC']]
+        });
         res.json(jobs);
     } catch (error) {
         res.status(500).json({ message: 'Failed to retrieve jobs', error: error.message });
     }
 });
 
-// Get job listings with pagination and filters
+// Get job listings with pagination and filters (MariaDB/Sequelize version)
 app.get('/api/jobs', async (req, res) => {
     try {
-        const { 
-            page = 1, 
-            limit = 10, 
-            location, 
-            type, 
-            industry, 
-            minSalary, 
+        const {
+            page = 1,
+            limit = 10,
+            location,
+            type,
+            industry,
+            minSalary,
             maxSalary,
             suitableForExpats,
             language,
@@ -313,162 +286,142 @@ app.get('/api/jobs', async (req, res) => {
             search
         } = req.query;
 
-        // Build filter query
-        const filter = {};
-        
-        if (location) filter.location = { $regex: location, $options: 'i' };
-        if (type) filter.type = type;
-        if (industry) filter.industry = industry;
-        if (minSalary) filter['salary.min'] = { $gte: Number(minSalary) };
-        if (maxSalary) filter['salary.max'] = { $lte: Number(maxSalary) };
-        if (suitableForExpats === 'true') filter.suitableForExpats = true;
-        if (visaSponsorshipOffered === 'true') filter.visaSponsorshipOffered = true;
-        
-        if (language) {
-            filter.languages = {
-                $elemMatch: {
-                    language: language
-                }
-            };
-        }
-        
-        // Text search
+        // Build filter query for Sequelize
+        const where = {};
+        if (location) where.location = { [sequelize.Sequelize.Op.like]: `%${location}%` };
+        if (type) where.type = type;
+        if (industry) where.industry = industry;
+        if (minSalary) where.salaryMin = { [sequelize.Sequelize.Op.gte]: Number(minSalary) };
+        if (maxSalary) where.salaryMax = { [sequelize.Sequelize.Op.lte]: Number(maxSalary) };
+        if (suitableForExpats === 'true') where.suitableForExpats = true;
+        if (visaSponsorshipOffered === 'true') where.visaSponsorshipOffered = true;
+        if (language) where.languages = { [sequelize.Sequelize.Op.like]: `%${language}%` };
         if (search) {
-            filter.$text = { $search: search };
+            where[sequelize.Sequelize.Op.or] = [
+                { title: { [sequelize.Sequelize.Op.like]: `%${search}%` } },
+                { company: { [sequelize.Sequelize.Op.like]: `%${search}%` } },
+                { industry: { [sequelize.Sequelize.Op.like]: `%${search}%` } },
+                { description: { [sequelize.Sequelize.Op.like]: `%${search}%` } }
+            ];
         }
-
-        // Pagination
-        const startIndex = (Number(page) - 1) * Number(limit);
-        
-        // Get jobs with pagination
-        const jobs = await Job.find(filter)
-            .skip(startIndex)
-            .limit(Number(limit))
-            .sort({ postedAt: -1, featuredJob: -1 })
-            .populate('postedBy', 'username profile.name');
-            
-        // Get total count
-        const total = await Job.countDocuments(filter);
-        
+        const offset = (Number(page) - 1) * Number(limit);
+        const { count, rows: jobs } = await Job.findAndCountAll({
+            where,
+            order: [['postedAt', 'DESC']],
+            offset,
+            limit: Number(limit)
+        });
         res.json({
             jobs,
-            totalPages: Math.ceil(total / Number(limit)),
+            totalPages: Math.ceil(count / Number(limit)),
             currentPage: Number(page),
-            totalJobs: total
+            totalJobs: count
         });
     } catch (error) {
         res.status(500).json({ message: 'Failed to retrieve jobs', error: error.message });
     }
 });
 
-// Get a single job by ID
+// Get a single job by ID (MariaDB/Sequelize version, flatten company info)
 app.get('/api/jobs/:id', async (req, res) => {
     try {
-        const job = await Job.findById(req.params.id)
-            .populate('postedBy', 'username profile.name')
-            .populate('applicants.userId', 'username profile.name profile.email');
-            
-        if (!job) {
-            return res.status(404).json({ message: 'Job not found' });
+        const job = await Job.findByPk(req.params.id);
+        if (!job) return res.status(404).json({ message: 'Job not found' });
+        let company = null;
+        if (job.companyId) {
+            company = await Company.findByPk(job.companyId);
         }
-        
-        res.json(job);
-    } catch (error) {
-        res.status(500).json({ message: 'Failed to retrieve job', error: error.message });
+        // Parse JSON fields for frontend compatibility
+        const requirements = job.requirements ? JSON.parse(job.requirements) : [];
+        const responsibilities = job.responsibilities ? JSON.parse(job.responsibilities) : [];
+        const languages = job.languages ? JSON.parse(job.languages) : [];
+        const benefits = job.benefits ? JSON.parse(job.benefits) : [];
+        // Salary structure for UI
+        const salary = {
+            min: job.salaryMin,
+            max: job.salaryMax,
+            currency: job.salaryCurrency || 'HKD',
+            period: job.salaryPeriod || 'monthly'
+        };
+        res.json({
+            ...job.toJSON(),
+            requirements,
+            responsibilities,
+            languages,
+            benefits,
+            salary,
+            company: company ? company.name : job.company
+        });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 });
 
-// Update a job
+// Update a job (MariaDB/Sequelize version)
 app.put('/api/jobs/:id', auth, authorize(['recruiter', 'admin']), async (req, res) => {
     try {
-        const job = await Job.findById(req.params.id);
-        
+        const job = await Job.findByPk(req.params.id);
         if (!job) {
             return res.status(404).json({ message: 'Job not found' });
         }
-        
-        // Check if the user is the job poster or an admin
-        if (job.postedBy.toString() !== req.user.userId && req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Not authorized to update this job' });
-        }
-        
-        const updatedJob = await Job.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true }
-        );
-        
-        res.json(updatedJob);
+        // Optionally check if the user is the job poster or admin
+        await job.update(req.body);
+        res.json(job);
     } catch (error) {
         res.status(500).json({ message: 'Failed to update job', error: error.message });
     }
 });
 
-// Delete a job
+// Delete a job (MariaDB/Sequelize version)
 app.delete('/api/jobs/:id', auth, authorize(['recruiter', 'admin']), async (req, res) => {
     try {
-        const job = await Job.findById(req.params.id);
-        
+        const job = await Job.findByPk(req.params.id);
         if (!job) {
             return res.status(404).json({ message: 'Job not found' });
         }
-        
-        // Check if the user is the job poster or an admin
-        if (job.postedBy.toString() !== req.user.userId && req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Not authorized to delete this job' });
-        }
-        
-        await Job.findByIdAndDelete(req.params.id);
+        await job.destroy();
         res.json({ message: 'Job deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Failed to delete job', error: error.message });
     }
 });
 
-// Apply for a job
+// Apply for a job (MariaDB/Sequelize version)
 app.post('/api/jobs/:id/apply', auth, authorize(['applicant']), async (req, res) => {
     try {
-        const job = await Job.findById(req.params.id);
-        
+        const job = await Job.findByPk(req.params.id);
         if (!job) {
             return res.status(404).json({ message: 'Job not found' });
         }
-        
         // Check if already applied
-        const alreadyApplied = job.applicants.some(
-            applicant => applicant.userId.toString() === req.user.userId
-        );
-        
-        if (alreadyApplied) {
+        const existing = await Application.findOne({ where: { userId: req.user.id, jobId: job.id } });
+        if (existing) {
             return res.status(400).json({ message: 'You have already applied for this job' });
         }
-        
-        // Add applicant to the job
-        job.applicants.push({
-            userId: req.user.userId,
-            status: 'Applied',
-            appliedAt: new Date()
-        });
-        // Also add job to user's appliedJobs array
-        await User.findByIdAndUpdate(
-            req.user.userId,
-            { $addToSet: { appliedJobs: job._id } }
-        );
-        // Create an Application document for history
+        // Create application
         await Application.create({
-            applicantId: req.user.userId,
-            jobId: job._id,
-            jobTitle: job.title,
-            status: 'Submitted',
+            userId: req.user.id,
+            jobId: job.id,
             coverLetter: req.body.coverLetter || '',
             applicantName: req.body.applicantName || '',
-            applicantEmail: req.body.applicantEmail || ''
+            applicantEmail: req.body.applicantEmail || '',
+            status: 'Submitted',
+            appliedAt: new Date()
         });
-        await job.save();
         res.json({ message: 'Application submitted successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Failed to apply for job', error: error.message });
     }
+});
+
+// POST /api/applications (MariaDB/Sequelize version)
+app.post('/api/applications', async (req, res) => {
+  try {
+    const application = await Application.create(req.body);
+    res.json({ success: true, application });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 // Get company by ID
@@ -528,38 +481,29 @@ app.post('/api/companies/logo', auth, authorize(['recruiter', 'admin']), upload.
     }
 });
 
-// Get all applications for recruiter
-app.get('/api/applications', auth, authorize(['recruiter', 'admin']), async (req, res) => {
+// Get current user's applications (MariaDB/Sequelize version)
+app.get('/api/applications/my', auth, async (req, res) => {
     try {
-        // Find all jobs posted by this recruiter
-        const jobs = await Job.find({ postedBy: req.user.userId })
-            .populate('applicants.userId', 'username profile.name profile.email profile.resume');
-            
-        // Extract applications from all jobs
-        const applications = jobs.flatMap(job => 
-            job.applicants.map(applicant => ({
-                jobId: job._id,
-                jobTitle: job.title,
-                applicant: applicant.userId,
-                status: applicant.status,
-                appliedAt: applicant.appliedAt
-            }))
-        );
-        
+        const applications = await Application.findAll({
+            where: { userId: req.user.id },
+            order: [['appliedAt', 'DESC']]
+        });
         res.json(applications);
     } catch (error) {
         res.status(500).json({ message: 'Failed to retrieve applications', error: error.message });
     }
 });
 
-// Get current user's applications
-app.get('/api/applications/my', auth, async (req, res) => {
+// Get all applications for recruiter (MariaDB/Sequelize version)
+app.get('/api/applications', auth, authorize(['recruiter', 'admin']), async (req, res) => {
     try {
-        // Find all applications for the current user
-        const applications = await Application.find({ applicantId: req.user.userId })
-            .sort({ createdAt: -1 }) // Most recent first
-            .lean(); // Convert Mongoose docs to plain objects for faster serialization
-        
+        // Find all jobs posted by this recruiter
+        const jobs = await Job.findAll({ where: { recruiterId: req.user.id } });
+        const jobIds = jobs.map(j => j.id);
+        const applications = await Application.findAll({
+            where: { jobId: jobIds },
+            order: [['appliedAt', 'DESC']]
+        });
         res.json(applications);
     } catch (error) {
         res.status(500).json({ message: 'Failed to retrieve applications', error: error.message });
@@ -599,16 +543,31 @@ app.put('/api/jobs/:jobId/applications/:userId', auth, authorize(['recruiter', '
     }
 });
 
-// Get user details by ID (for recruiters to view applicants)
+// Get user details by ID (for recruiters to view applicants) - MariaDB/Sequelize version, return profile object
 app.get('/api/users/:id', auth, authorize(['recruiter', 'admin']), async (req, res) => {
     try {
-        const user = await User.findById(req.params.id).select('-password');
-        
+        const user = await User.findByPk(req.params.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        
-        res.json(user);
+        res.json({
+            id: user.id,
+            username: user.username,
+            role: user.role,
+            profile: {
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                nationality: user.nationality,
+                currentLocation: user.currentLocation,
+                skills: user.skills ? JSON.parse(user.skills) : [],
+                languages: user.languages ? JSON.parse(user.languages) : [],
+                workExperience: user.workExperience ? JSON.parse(user.workExperience) : [],
+                education: user.education ? JSON.parse(user.education) : [],
+                resume: user.resume,
+                photo: user.photo
+            }
+        });
     } catch (error) {
         res.status(500).json({ message: 'Failed to load user details', error: error.message });
     }

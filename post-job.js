@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'login.html?role=recruiter';
         return;
     }
+    const isProd = window.location.hostname === 'adage.host';
+    const API_BASE = isProd
+      ? 'https://adage.host/Job_for_Expats/api'
+      : '/api';
+    console.log('Using API base path:', API_BASE);
     // Load job form (assume markup is present in post-job.html)
     const form = document.getElementById('post-job-form');
     form.onsubmit = async function(e) {
@@ -56,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
             submitBtn.textContent = 'Posting...';
-            const response = await fetch('/api/jobs', {
+            const response = await fetch(`${API_BASE}/jobs`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

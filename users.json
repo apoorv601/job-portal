@@ -1,0 +1,307 @@
+[{
+  "_id": {
+    "$oid": "682af7d696e02ef99306e52e"
+  },
+  "username": "admin",
+  "password": "$2a$10$3UEYp5TTmCQcQ6C6h8g3qeNBa0gpl71fr2LbUfeDtHv.ux2Mi8uE.",
+  "role": "admin",
+  "profile": {
+    "name": "Admin User",
+    "email": "admin@hkexpatjobs.com",
+    "nationality": "Hong Kong",
+    "languages": [],
+    "skills": [],
+    "education": [],
+    "workExperience": []
+  },
+  "createdAt": {
+    "$date": "2025-05-19T09:20:22.964Z"
+  },
+  "lastLogin": {
+    "$date": "2025-05-19T09:20:22.964Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682af7d796e02ef99306e52f"
+  },
+  "username": "recruiter",
+  "password": "$2a$10$/vB7wr1.h9cJZlJG98kWkeygLvvxdKXrnlxh7Ib3IWx4Jea2z60y2",
+  "role": "recruiter",
+  "profile": {
+    "name": "Sarah Wong",
+    "email": "recruiter@hkexpatjobs.com",
+    "phone": "+852 5555 1234",
+    "nationality": "Hong Kong",
+    "languages": [],
+    "skills": [],
+    "education": [],
+    "workExperience": []
+  },
+  "createdAt": {
+    "$date": "2025-05-19T09:20:23.047Z"
+  },
+  "lastLogin": {
+    "$date": "2025-05-19T09:20:23.047Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682af7d796e02ef99306e530"
+  },
+  "username": "jobseeker",
+  "password": "$2a$10$U/AcUnFu8nbpWnkc9ov.R.l7bZuJYBNdFD.uIQOgXN/p7zHT8Yfr.",
+  "role": "applicant",
+  "profile": {
+    "name": "John Smith",
+    "email": "john.smith@example.com",
+    "phone": "+1 234 567 8901",
+    "nationality": "United States",
+    "currentLocation": "New York, USA",
+    "languages": [
+      {
+        "language": "English",
+        "proficiency": "Native",
+        "_id": {
+          "$oid": "682af7d796e02ef99306e531"
+        }
+      },
+      {
+        "language": "Mandarin",
+        "proficiency": "Basic",
+        "_id": {
+          "$oid": "682af7d796e02ef99306e532"
+        }
+      }
+    ],
+    "visaStatus": "Seeking sponsorship",
+    "yearsOfExperience": 5,
+    "skills": [
+      "Project Management",
+      "Marketing Strategy",
+      "Digital Marketing",
+      "Team Leadership"
+    ],
+    "education": [
+      {
+        "degree": "Bachelor of Business Administration",
+        "institution": "New York University",
+        "field": "Marketing",
+        "startDate": {
+          "$date": "2015-09-01T00:00:00.000Z"
+        },
+        "endDate": {
+          "$date": "2019-05-30T00:00:00.000Z"
+        },
+        "country": "United States",
+        "_id": {
+          "$oid": "682af7d796e02ef99306e533"
+        }
+      }
+    ],
+    "workExperience": [
+      {
+        "title": "Marketing Manager",
+        "company": "ABC Corporation",
+        "location": "New York",
+        "startDate": {
+          "$date": "2019-06-15T00:00:00.000Z"
+        },
+        "endDate": {
+          "$date": "2023-04-30T00:00:00.000Z"
+        },
+        "description": "Led marketing campaigns for various product lines, managed a team of 5 marketing professionals.",
+        "isInHongKong": false,
+        "_id": {
+          "$oid": "682af7d796e02ef99306e534"
+        }
+      }
+    ],
+    "resume": "/uploads/sample-resume.pdf"
+  },
+  "createdAt": {
+    "$date": "2025-05-19T09:20:23.125Z"
+  },
+  "lastLogin": {
+    "$date": "2025-05-19T22:15:37.280Z"
+  },
+  "__v": 1,
+  "appliedJobs": [
+    {
+      "$oid": "682af7d796e02ef99306e54e"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "682af7d796e02ef99306e535"
+  },
+  "username": "maria",
+  "password": "$2a$10$8L8iZMnbDFZFLl.8nkHn2eLs3Y4xz5WDulLFE0TzZyejoFYDU5T8u",
+  "role": "applicant",
+  "profile": {
+    "name": "Maria Garcia",
+    "email": "maria.garcia@example.com",
+    "phone": "+34 612 345 678",
+    "nationality": "Spain",
+    "currentLocation": "Barcelona, Spain",
+    "languages": [
+      {
+        "language": "Spanish",
+        "proficiency": "Native",
+        "_id": {
+          "$oid": "682af7d796e02ef99306e536"
+        }
+      },
+      {
+        "language": "English",
+        "proficiency": "Professional",
+        "_id": {
+          "$oid": "682af7d796e02ef99306e537"
+        }
+      },
+      {
+        "language": "French",
+        "proficiency": "Intermediate",
+        "_id": {
+          "$oid": "682af7d796e02ef99306e538"
+        }
+      }
+    ],
+    "visaStatus": "Not applicable yet",
+    "yearsOfExperience": 3,
+    "skills": [
+      "Web Development",
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Express"
+    ],
+    "education": [
+      {
+        "degree": "Master of Computer Science",
+        "institution": "University of Barcelona",
+        "field": "Software Engineering",
+        "startDate": {
+          "$date": "2019-09-01T00:00:00.000Z"
+        },
+        "endDate": {
+          "$date": "2021-06-30T00:00:00.000Z"
+        },
+        "country": "Spain",
+        "_id": {
+          "$oid": "682af7d796e02ef99306e539"
+        }
+      }
+    ],
+    "workExperience": [
+      {
+        "title": "Frontend Developer",
+        "company": "Tech Innovators SL",
+        "location": "Barcelona",
+        "startDate": {
+          "$date": "2021-07-15T00:00:00.000Z"
+        },
+        "endDate": null,
+        "description": "Developing responsive web applications using React and integrating with RESTful APIs.",
+        "isInHongKong": false,
+        "_id": {
+          "$oid": "682af7d796e02ef99306e53a"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-05-19T09:20:23.209Z"
+  },
+  "lastLogin": {
+    "$date": "2025-05-19T09:20:23.209Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682b08c4e9e06c3a2dc73ec5"
+  },
+  "username": "test",
+  "password": "$2a$10$gDQAJG2HX8eUFqBSU5TbCeONkO.30QkpazvJtFjBiLXn/Xauhwsfe",
+  "role": "recruiter",
+  "profile": {
+    "name": "test test",
+    "email": "test@gmail.com",
+    "nationality": "HK",
+    "currentLocation": "HK",
+    "languages": [],
+    "skills": [],
+    "education": [],
+    "workExperience": []
+  },
+  "createdAt": {
+    "$date": "2025-05-19T10:32:36.085Z"
+  },
+  "__v": 1,
+  "lastLogin": {
+    "$date": "2025-05-19T22:16:21.864Z"
+  },
+  "appliedJobs": []
+},
+{
+  "_id": {
+    "$oid": "682b0db0b1a4682b1af97101"
+  },
+  "username": "testjob",
+  "password": "$2a$10$X8bKMqpRHQWb/k8U3inqdOqn6crhCdlhuQi8DXsquEBwuMCBKJAn.",
+  "role": "applicant",
+  "profile": {
+    "name": "testjob",
+    "email": "testjob@gmail.com",
+    "nationality": "HK",
+    "currentLocation": "HK",
+    "languages": [],
+    "skills": [],
+    "education": [],
+    "workExperience": []
+  },
+  "createdAt": {
+    "$date": "2025-05-19T10:53:36.641Z"
+  },
+  "__v": 1,
+  "lastLogin": {
+    "$date": "2025-05-19T21:51:00.047Z"
+  },
+  "appliedJobs": [
+    {
+      "$oid": "682af7d796e02ef99306e550"
+    },
+    {
+      "$oid": "682b22b80f6a2cee3f465903"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "682b15d609fdf37ceaaa73e6"
+  },
+  "username": "test123",
+  "password": "$2a$10$.WUkD8yBjOY.bZxrjKer8ujQpojVNbFY6TBdMm4zCX/Di8bNQ.JFi",
+  "role": "applicant",
+  "profile": {
+    "name": "test test",
+    "email": "test@gmail.com",
+    "nationality": "HK",
+    "currentLocation": "HK",
+    "languages": [],
+    "skills": [],
+    "education": [],
+    "workExperience": []
+  },
+  "createdAt": {
+    "$date": "2025-05-19T11:28:22.008Z"
+  },
+  "__v": 0,
+  "lastLogin": {
+    "$date": "2025-05-19T11:28:27.642Z"
+  }
+}]

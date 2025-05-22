@@ -1,7 +1,90 @@
 // login.js
 // Handles login for both applicants and recruiters based on URL param
 
+// --- API base path detection for local/cloud ---
+const isProd = window.location.hostname === 'adage.host';
+const API_BASE = isProd
+  ? 'https://adage.host/Job_for_Expats/api'
+  : '/api';
+
+// Keep a debug log of the API base path used - this helps debugging
+console.log('Using API base path:', API_BASE);
+
+// Function to check database connection status
+async function checkDatabaseConnection() {
+    try {
+        console.log('Checking database connection status...');
+        const response = await fetch(`${API_BASE}/dbstatus`);
+        const data = await response.json();
+        console.log('Database connection status:', data);
+        
+        // Create or update the status indicator
+        let statusIndicator = document.getElementById('db-status-indicator');
+        if (!statusIndicator) {
+            statusIndicator = document.createElement('div');
+            statusIndicator.id = 'db-status-indicator';
+            statusIndicator.style.position = 'fixed';
+            statusIndicator.style.bottom = '10px';
+            statusIndicator.style.right = '10px';
+            statusIndicator.style.padding = '8px 12px';
+            statusIndicator.style.borderRadius = '4px';
+            statusIndicator.style.fontSize = '12px';
+            statusIndicator.style.zIndex = '9999';
+            document.body.appendChild(statusIndicator);
+        }
+        
+        if (data.connected) {
+            statusIndicator.style.backgroundColor = '#4CAF50';
+            statusIndicator.style.color = 'white';
+            statusIndicator.innerHTML = '✓ Database Connected';
+            statusIndicator.title = `MongoDB connected at: ${data.timestamp}`;
+        } else {
+            statusIndicator.style.backgroundColor = '#F44336';
+            statusIndicator.style.color = 'white';
+            statusIndicator.innerHTML = '✗ Database Error';
+            statusIndicator.title = `Error: ${data.error || 'Unknown error'}\nTimestamp: ${data.timestamp}`;
+        }
+        
+        // Click to show more details
+        statusIndicator.style.cursor = 'pointer';
+        statusIndicator.onclick = function() {
+            alert(`Database Status:\n
+Connection: ${data.connected ? 'Connected' : 'Disconnected'}
+Timestamp: ${data.timestamp}
+${data.error ? 'Error: ' + data.error : ''}`);
+        };
+        
+        return data.connected;
+    } catch (error) {
+        console.error('Failed to check database status:', error);
+        
+        // Create status indicator for connection failure
+        let statusIndicator = document.getElementById('db-status-indicator');
+        if (!statusIndicator) {
+            statusIndicator = document.createElement('div');
+            statusIndicator.id = 'db-status-indicator';
+            statusIndicator.style.position = 'fixed';
+            statusIndicator.style.bottom = '10px';
+            statusIndicator.style.right = '10px';
+            statusIndicator.style.padding = '8px 12px';
+            statusIndicator.style.borderRadius = '4px';
+            statusIndicator.style.fontSize = '12px';
+            statusIndicator.style.zIndex = '9999';
+            document.body.appendChild(statusIndicator);
+        }
+        
+        statusIndicator.style.backgroundColor = '#FF9800';
+        statusIndicator.style.color = 'white';
+        statusIndicator.innerHTML = '! API Connection Error';
+        statusIndicator.title = `Could not connect to API endpoint: ${API_BASE}/dbstatus`;
+        
+        return false;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Check database connection on page load
+    checkDatabaseConnection();
     const loginForm = document.getElementById('login-form');
     // Set role input based on URL param
     const params = new URLSearchParams(window.location.search);
@@ -40,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     submitBtn.textContent = 'Logging in...';
                 }
                 console.log('Sending login request:', { username, password });
-                const response = await fetch('/api/login', {
+                const response = await fetch(`${API_BASE}/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
@@ -82,12 +165,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 accounts.push({ username, role, token: data.token });
                 localStorage.setItem('accounts', JSON.stringify(accounts));
                 
-                // Redirect to home page after login
-                console.log('Redirecting to index.html...');
-                if (role === 'recruiter') {
-                    window.location.href = 'recruiter-profile.html';
-                } else {
-                    window.location.href = 'applicant-profile.html';
+                // On successful login, redirect to home page
+                if (data.token) {
+                    localStorage.setItem('authToken', data.token);
+                    window.location.href = 'index.html';
+                    return;
                 }
             } catch (error) {
                 console.error('Login error:', error);

@@ -1,6 +1,12 @@
 // recruiter-profile.js
 // Loads recruiter profile and company info
 
+const isProd = window.location.hostname === 'adage.host';
+const API_BASE = isProd
+  ? 'https://adage.host/Job_for_Expats/api'
+  : '/api';
+console.log('Using API base path:', API_BASE);
+
 document.addEventListener('DOMContentLoaded', async () => {
     const authToken = localStorage.getItem('authToken');
     if (!authToken) {
@@ -17,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     profileContent.innerHTML = '<div class="loading-spinner"></div>';
     try {
-        const res = await fetch('/api/profile', { headers: { 'Authorization': `Bearer ${authToken}` } });
+        const res = await fetch(`${API_BASE}/profile`, { headers: { 'Authorization': `Bearer ${authToken}` } });
         if (!res.ok) throw new Error('Failed to load profile');
         const user = await res.json();
         let html = `<h3>${user.profile.name}</h3>`;
@@ -28,6 +34,66 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (user.profile.skills && user.profile.skills.length > 0) html += `<div><b>Skills:</b> ${user.profile.skills.join(', ')}</div>`;
         profileContent.innerHTML = html;
         
+        // Add Edit Profile button
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'Edit Profile';
+        editBtn.className = 'btn edit-profile-btn';
+        editBtn.onclick = () => showEditProfileModal(user.profile);
+        profileContent.prepend(editBtn);
+
+        // Modal for editing profile
+        function showEditProfileModal(profile) {
+            let modal = document.getElementById('edit-profile-modal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'edit-profile-modal';
+                modal.style.position = 'fixed';
+                modal.style.top = '0';
+                modal.style.left = '0';
+                modal.style.width = '100vw';
+                modal.style.height = '100vh';
+                modal.style.background = 'rgba(0,0,0,0.3)';
+                modal.style.display = 'flex';
+                modal.style.alignItems = 'center';
+                modal.style.justifyContent = 'center';
+                modal.innerHTML = `
+                    <div style="background:#fff;padding:2rem;border-radius:8px;min-width:320px;max-width:90vw;">
+                        <h2>Edit Profile</h2>
+                        <form id="edit-profile-form">
+                            <label>Name:<input type="text" name="name" value="${profile.name||''}" required></label><br><br>
+                            <label>Email:<input type="email" name="email" value="${profile.email||''}" required></label><br><br>
+                            <label>Phone:<input type="text" name="phone" value="${profile.phone||''}"></label><br><br>
+                            <label>Nationality:<input type="text" name="nationality" value="${profile.nationality||''}"></label><br><br>
+                            <label>Location:<input type="text" name="currentLocation" value="${profile.currentLocation||''}"></label><br><br>
+                            <button type="submit" class="btn">Save</button>
+                            <button type="button" class="btn secondary" id="cancel-edit-profile">Cancel</button>
+                        </form>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+            modal.style.display = 'flex';
+            document.getElementById('cancel-edit-profile').onclick = () => { modal.style.display = 'none'; };
+            document.getElementById('edit-profile-form').onsubmit = async function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const updatedProfile = {};
+                for (let [k, v] of formData.entries()) updatedProfile[k] = v;
+                const authToken = localStorage.getItem('authToken');
+                const res = await fetch('/api/profile', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+                    body: JSON.stringify({ profile: updatedProfile })
+                });
+                if (res.ok) {
+                    modal.style.display = 'none';
+                    location.reload();
+                } else {
+                    alert('Failed to update profile');
+                }
+            };
+        }
+
         // Load posted jobs
         loadPostedJobs(authToken);
     } catch (e) {
@@ -49,7 +115,7 @@ async function loadPostedJobs(authToken) {
     postedJobsContent.innerHTML = '<div class="loading-spinner"></div>';
     
     try {
-        const res = await fetch('/api/jobs/my', { 
+        const res = await fetch(`${API_BASE}/jobs/my`, { 
             headers: { 'Authorization': `Bearer ${authToken}` } 
         });
         
@@ -156,7 +222,7 @@ async function loadJobApplicants(authToken, jobId) {
     
     try {
         // First fetch the job to get the title
-        const jobRes = await fetch(`/api/jobs/${jobId}`, { 
+        const jobRes = await fetch(`${API_BASE}/jobs/${jobId}`, { 
             headers: { 'Authorization': `Bearer ${authToken}` } 
         });
         
@@ -166,7 +232,7 @@ async function loadJobApplicants(authToken, jobId) {
         jobApplicantsTitle.textContent = `Applicants for "${job.title}"`;
         
         // Then fetch the applicants
-        const res = await fetch(`/api/jobs/${jobId}/applicants`, { 
+        const res = await fetch(`${API_BASE}/jobs/${jobId}/applicants`, { 
             headers: { 'Authorization': `Bearer ${authToken}` } 
         });
         
