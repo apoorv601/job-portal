@@ -150,3 +150,8 @@ Server running on port 3000
 [2025-05-25T09:06:59.377Z] ERROR: Unhandled Promise Rejection: ReferenceError: testDatabaseConnection is not defined
 [2025-05-25T09:07:01.703Z] ERROR: Error fetching jobs: SequelizeConnectionError: Server requests authentication using unknown plugin auth_gssapi_client. See TODO: add plugins doco here on how to configure or author authentication plugins.
 [2025-05-25T09:07:01.704Z] ERROR: Error fetching jobs: SequelizeConnectionError: Server requests authentication using unknown plugin auth_gssapi_client. See TODO: add plugins doco here on how to configure or author authentication plugins.
+[2025-05-25T09:07:28.924Z] INFO: Database configuration: [object Object]
+[2025-05-25T09:07:29.099Z] INFO: Server running on port 3000
+[2025-05-25T09:07:29.099Z] INFO: Environment: development
+[2025-05-25T09:07:29.099Z] INFO: Base Path: /
+[2025-05-25T09:07:29.124Z] INFO: Database connection has been established successfully.
