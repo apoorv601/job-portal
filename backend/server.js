@@ -6,7 +6,28 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-const sequelize = require('./sequelize');
+// Redirect console logs to stderr.log
+const fsLog = require('fs');
+const logStream = fsLog.createWriteStream('stderr.log', { flags: 'a' });
+console.log = function(...args) {
+    logStream.write(args.join(' ') + '\n');
+};
+console.error = function(...args) {
+    logStream.write('[ERROR] ' + args.join(' ') + '\n');
+};
+
+// Use environment variables for DB credentials
+const sequelize = new (require('sequelize'))(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASS,
+    {
+        host: process.env.DB_HOST,
+        dialect: 'mariadb',
+        logging: false
+    }
+);
+
 const User = require('./models/User');
 const Job = require('./models/Job');
 const Company = require('./models/Company');
@@ -21,7 +42,7 @@ Company.hasMany(Job, { foreignKey: 'companyId' });
 Job.belongsTo(Company, { foreignKey: 'companyId' });
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 const JWT_SECRET = 'your_jwt_secret'; // In production, use environment variable
 
 // Configure multer for file uploads
@@ -72,6 +93,24 @@ app.get('/api/dbstatus', (req, res) => {
         connected: true, // If server is running, MariaDB is connected
         error: null,
         timestamp: new Date().toISOString()
+    });
+});
+
+// Debug endpoint to show DB config (for troubleshooting only, remove in production)
+app.get('/api/dbdebug', async (req, res) => {
+    let status = 'unknown';
+    try {
+        await sequelize.authenticate();
+        status = 'connected';
+    } catch (e) {
+        status = 'error: ' + e.message;
+    }
+    res.json({
+        db_host: process.env.DB_HOST || 'localhost',
+        db_user: process.env.DB_USER || 'root',
+        db_name: process.env.DB_NAME || 'job_portal_db',
+        db_status: status,
+        node_env: process.env.NODE_ENV || 'not set'
     });
 });
 
@@ -662,6 +701,11 @@ app.put('/api/applications/:id/status', auth, authorize(['recruiter']), async (r
     } catch (error) {
         res.status(500).json({ message: 'Failed to update application status', error: error.message });
     }
+});
+
+// Endpoint to display the current port number
+app.get('/port', (req, res) => {
+    res.send(`Node.js app is running on port: ${PORT}`);
 });
 
 app.listen(PORT, () => {

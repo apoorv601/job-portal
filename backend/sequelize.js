@@ -1,8 +1,13 @@
 // sequelize.js
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('job_portal_db', 'root', '@poorv91', {
-  host: 'localhost', // Change to your cPanel host if needed
+const dbName = process.env.DB_NAME || 'job_portal_db';
+const dbUser = process.env.DB_USER || 'root';
+const dbPass = process.env.DB_PASS || '@poorv91';
+const dbHost = process.env.DB_HOST || 'localhost';
+
+const sequelize = new Sequelize(dbName, dbUser, dbPass, {
+  host: dbHost,
   dialect: 'mariadb',
   logging: false,
 });
