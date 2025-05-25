@@ -1,0 +1,152 @@
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+[ERROR] Error: ENOENT: no such file or directory, stat 'C:\Workspace\index.html'
+Server running on port 3000
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:26, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:25, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+Server running on port 3000
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:29, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:29, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:30, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+Server running on port 3000
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:32, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:32, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+Server running on port 3000
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:35, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:36, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:37, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:37, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+Server running on port 3000
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:40, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:41, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:41, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:40, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+Server running on port 3000
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:44, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:43, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+Server running on port 3000
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:46, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:47, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+Server running on port 3000
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:49, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:52, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:51, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:52, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+Server running on port 3000
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:56, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:54, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:55, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+[ERROR] Error fetching jobs: SequelizeDatabaseError: (conn:54, no: 1054, SQLState: 42S22) Unknown column 'Job.salary' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`description`, `Job`.`salary`, `Job`.`location`, `Job`.`type`, `Job`.`createdAt`, `Job`.`updatedAt`, `Company`.`id` AS `Company.id`, `Company`.`name` AS `Company.name` FROM `Jobs` AS `Job` LEFT OUTER JOIN `Companies`... - parameters:[]
+Server running on port 3000
+Server running on port 3000
+[ERROR] Error fetching profile: SequelizeEagerLoadingError: Company is not associated to Application!
+[ERROR] Error fetching profile: SequelizeEagerLoadingError: Company is not associated to Application!
+[ERROR] Error fetching profile: SequelizeEagerLoadingError: Company is not associated to Application!
+[ERROR] Error fetching profile: SequelizeEagerLoadingError: Company is not associated to Application!
+[ERROR] Error fetching profile: SequelizeEagerLoadingError: Company is not associated to Application!
+[ERROR] Error fetching profile: SequelizeEagerLoadingError: Company is not associated to Application!
+Server running on port 3000
+Server running on port 3000
+[ERROR] Error fetching job: SequelizeDatabaseError: (conn:100, no: 1054, SQLState: 42S22) Unknown column 'Company.email' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`company`, `Job`.`companyId`, `Job`.`location`, `Job`.`type`, `Job`.`industry`, `Job`.`salaryMin`, `Job`.`salaryMax`, `Job`.`salaryCurrency`, `Job`.`salaryPeriod`, `Job`.`description`, `Job`.`requirements`, `Job`.`re... - parameters:[]
+Server running on port 3000
+[ERROR] Error fetching job: SequelizeDatabaseError: (conn:103, no: 1054, SQLState: 42S22) Unknown column 'Company.email' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`company`, `Job`.`companyId`, `Job`.`location`, `Job`.`type`, `Job`.`industry`, `Job`.`salaryMin`, `Job`.`salaryMax`, `Job`.`salaryCurrency`, `Job`.`salaryPeriod`, `Job`.`description`, `Job`.`requirements`, `Job`.`re... - parameters:[]
+[ERROR] Error fetching job: SequelizeDatabaseError: (conn:103, no: 1054, SQLState: 42S22) Unknown column 'Company.email' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`company`, `Job`.`companyId`, `Job`.`location`, `Job`.`type`, `Job`.`industry`, `Job`.`salaryMin`, `Job`.`salaryMax`, `Job`.`salaryCurrency`, `Job`.`salaryPeriod`, `Job`.`description`, `Job`.`requirements`, `Job`.`re... - parameters:[]
+[ERROR] Error fetching job: SequelizeDatabaseError: (conn:103, no: 1054, SQLState: 42S22) Unknown column 'Company.email' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`company`, `Job`.`companyId`, `Job`.`location`, `Job`.`type`, `Job`.`industry`, `Job`.`salaryMin`, `Job`.`salaryMax`, `Job`.`salaryCurrency`, `Job`.`salaryPeriod`, `Job`.`description`, `Job`.`requirements`, `Job`.`re... - parameters:[]
+[ERROR] Error fetching job: SequelizeDatabaseError: (conn:103, no: 1054, SQLState: 42S22) Unknown column 'Company.email' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`company`, `Job`.`companyId`, `Job`.`location`, `Job`.`type`, `Job`.`industry`, `Job`.`salaryMin`, `Job`.`salaryMax`, `Job`.`salaryCurrency`, `Job`.`salaryPeriod`, `Job`.`description`, `Job`.`requirements`, `Job`.`re... - parameters:[]
+[ERROR] Error fetching job: SequelizeDatabaseError: (conn:103, no: 1054, SQLState: 42S22) Unknown column 'Company.email' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`company`, `Job`.`companyId`, `Job`.`location`, `Job`.`type`, `Job`.`industry`, `Job`.`salaryMin`, `Job`.`salaryMax`, `Job`.`salaryCurrency`, `Job`.`salaryPeriod`, `Job`.`description`, `Job`.`requirements`, `Job`.`re... - parameters:[]
+[ERROR] Error fetching job: SequelizeDatabaseError: (conn:103, no: 1054, SQLState: 42S22) Unknown column 'Company.email' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`company`, `Job`.`companyId`, `Job`.`location`, `Job`.`type`, `Job`.`industry`, `Job`.`salaryMin`, `Job`.`salaryMax`, `Job`.`salaryCurrency`, `Job`.`salaryPeriod`, `Job`.`description`, `Job`.`requirements`, `Job`.`re... - parameters:[]
+[ERROR] Error fetching job: SequelizeDatabaseError: (conn:110, no: 1054, SQLState: 42S22) Unknown column 'Company.email' in 'SELECT'
+sql: SELECT `Job`.`id`, `Job`.`title`, `Job`.`company`, `Job`.`companyId`, `Job`.`location`, `Job`.`type`, `Job`.`industry`, `Job`.`salaryMin`, `Job`.`salaryMax`, `Job`.`salaryCurrency`, `Job`.`salaryPeriod`, `Job`.`description`, `Job`.`requirements`, `Job`.`re... - parameters:[]
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+[2025-05-25T08:59:43.816Z] INFO: Database configuration: [object Object]
+[2025-05-25T08:59:43.996Z] INFO: Server running on port 3000
+[2025-05-25T08:59:43.996Z] INFO: Environment: development
+[2025-05-25T08:59:43.996Z] INFO: Base Path: /
+[2025-05-25T08:59:44.021Z] INFO: Database connection has been established successfully.
+[2025-05-25T09:03:08.199Z] INFO: Database configuration: [object Object]
+[2025-05-25T09:03:08.371Z] ERROR: Uncaught Exception: ReferenceError: Cannot access 'BASE_PATH' before initialization
+    at Object.<anonymous> (C:\Workspace\Job_Portal\server.js:110:12)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+    at node:internal/main/run_main_module:36:49
+[2025-05-25T09:03:53.026Z] INFO: Database configuration: [object Object]
+[2025-05-25T09:03:53.201Z] ERROR: Uncaught Exception: ReferenceError: Cannot access 'BASE_PATH' before initialization
+    at Object.<anonymous> (C:\Workspace\Job_Portal\server.js:110:12)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+    at node:internal/main/run_main_module:36:49
+[2025-05-25T09:05:06.908Z] ERROR: Uncaught Exception: ReferenceError: User is not defined
+    at Object.<anonymous> (C:\Workspace\Job_Portal\server.js:126:1)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+    at node:internal/main/run_main_module:36:49
+[2025-05-25T09:06:59.376Z] INFO: Server running on port 3000
+[2025-05-25T09:06:59.377Z] INFO: Environment: development
+[2025-05-25T09:06:59.377Z] INFO: Base Path: /
+[2025-05-25T09:06:59.377Z] ERROR: Unhandled Promise Rejection: ReferenceError: testDatabaseConnection is not defined
+[2025-05-25T09:07:01.703Z] ERROR: Error fetching jobs: SequelizeConnectionError: Server requests authentication using unknown plugin auth_gssapi_client. See TODO: add plugins doco here on how to configure or author authentication plugins.
+[2025-05-25T09:07:01.704Z] ERROR: Error fetching jobs: SequelizeConnectionError: Server requests authentication using unknown plugin auth_gssapi_client. See TODO: add plugins doco here on how to configure or author authentication plugins.

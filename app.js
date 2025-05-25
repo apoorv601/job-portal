@@ -361,17 +361,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const postedDate = job.postedAt ? new Date(job.postedAt) : new Date();
             const timeAgo = getTimeAgo(postedDate);
             let salaryDisplay = 'Not specified';
-            if (job.salary && job.salary.min) {
-                salaryDisplay = job.salary.min.toLocaleString();
-                if (job.salary.max) {
-                    salaryDisplay += ` - ${job.salary.max.toLocaleString()}`;
+            if (job.salaryMin) {
+                salaryDisplay = job.salaryMin.toLocaleString();
+                if (job.salaryMax) {
+                    salaryDisplay += ` - ${job.salaryMax.toLocaleString()}`;
                 }
-                salaryDisplay += ` ${job.salary.currency || 'HKD'}`;
-                if (job.salary.period === 'monthly') {
-                    salaryDisplay += ' /month';
-                } else if (job.salary.period === 'annual') {
-                    salaryDisplay += ' /year';
-                }
+                salaryDisplay += ` ${job.salaryCurrency || 'HKD'}`;
+                salaryDisplay += ' /month';
             }
             return `
             <div class="job-card-jobsdb">
