@@ -20,6 +20,9 @@ const Job = sequelize.define('Job', {
   suitableForExpats: DataTypes.BOOLEAN,
   visaSponsorshipOffered: DataTypes.BOOLEAN,
   postedAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+}, {
+  tableName: 'jobs',
+  freezeTableName: true
 });
 
 module.exports = Job;

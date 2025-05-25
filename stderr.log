@@ -155,3 +155,13 @@ Server running on port 3000
 [2025-05-25T09:07:29.099Z] INFO: Environment: development
 [2025-05-25T09:07:29.099Z] INFO: Base Path: /
 [2025-05-25T09:07:29.124Z] INFO: Database connection has been established successfully.
+[2025-05-25T09:12:34.456Z] INFO: Database configuration: [object Object]
+[2025-05-25T09:12:34.637Z] INFO: Server running on port 3000
+[2025-05-25T09:12:34.637Z] INFO: Environment: development
+[2025-05-25T09:12:34.637Z] INFO: Base Path: /
+[2025-05-25T09:12:34.661Z] INFO: Database connection has been established successfully.
+[2025-05-25T10:19:31.640Z] INFO: Database configuration: [object Object]
+[2025-05-25T10:19:31.825Z] INFO: Server running on port 3000
+[2025-05-25T10:19:31.826Z] INFO: Environment: development
+[2025-05-25T10:19:31.826Z] INFO: Base Path: /
+[2025-05-25T10:19:31.849Z] INFO: Database connection has been established successfully.

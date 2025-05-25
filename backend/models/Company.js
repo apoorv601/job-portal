@@ -19,6 +19,9 @@ const Company = sequelize.define('Company', {
   recruiterId: { type: DataTypes.INTEGER, references: { model: 'Users', key: 'id' } },
   verified: { type: DataTypes.BOOLEAN, defaultValue: false },
   createdAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
+}, {
+  tableName: 'companies',
+  freezeTableName: true
 });
 
 module.exports = Company;

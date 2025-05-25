@@ -16,7 +16,8 @@ const User = sequelize.define('User', {
   resume: DataTypes.STRING, // URL to stored resume
   photo: DataTypes.STRING, // URL to profile photo
 }, {
-  // Other model options go here
+  tableName: 'users',
+  freezeTableName: true
 });
 
 module.exports = User;

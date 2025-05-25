@@ -85,7 +85,6 @@ const testDatabaseConnection = async () => {
 };
 
 const app = express();
-const apiRouter = express.Router();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = 'your_jwt_secret'; // In production, use environment variable
 
@@ -126,9 +125,8 @@ if (fs.existsSync(path.join(frontendBuildPath, 'index.html'))) {
     });
 }
 
-// Move all API endpoints to apiRouter instead of app
 // DB Status endpoint - does not require authentication
-apiRouter.get('/dbstatus', async (req, res) => {
+app.get('/api/dbstatus', async (req, res) => {
     try {
         await sequelize.authenticate();
         res.json({
@@ -146,7 +144,7 @@ apiRouter.get('/dbstatus', async (req, res) => {
 });
 
 // Debug endpoint to show DB config (for troubleshooting only, remove in production)
-apiRouter.get('/dbdebug', async (req, res) => {
+app.get('/api/dbdebug', async (req, res) => {
     let status = 'unknown';
     let error = null;
     try {
@@ -198,7 +196,7 @@ const authorize = (roles) => {
 };
 
 // --- Registration Endpoint ---
-apiRouter.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
     const { username, password, role, name, email, nationality, currentLocation } = req.body;
     try {
         const existing = await User.findOne({ where: { username } });
@@ -222,7 +220,7 @@ apiRouter.post('/register', async (req, res) => {
 });
 
 // --- Improved Login Endpoint (accepts just username/password) ---
-apiRouter.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
     try {
         const user = await User.findOne({ where: { username } });
@@ -241,7 +239,7 @@ apiRouter.post('/login', async (req, res) => {
 });
 
 // --- Profile Endpoint (with auth) ---
-apiRouter.get('/profile', auth, async (req, res) => {
+app.get('/api/profile', auth, async (req, res) => {
     try {
         const user = await User.findByPk(req.user.id);
         if (!user) {
@@ -267,7 +265,7 @@ apiRouter.get('/profile', auth, async (req, res) => {
 });
 
 // Enhanced /api/jobs endpoint with search support
-apiRouter.get('/jobs', async (req, res) => {
+app.get('/api/jobs', async (req, res) => {
     try {
         let page = parseInt(req.query.page) || 1;
         let limit = parseInt(req.query.limit) || 10;
@@ -320,7 +318,7 @@ apiRouter.get('/jobs', async (req, res) => {
     }
 });
 
-apiRouter.post('/jobs', async (req, res) => {
+app.post('/api/jobs', async (req, res) => {
     const { title, description, salary, location, type, companyId } = req.body;
     try {
         // Remove 'salary' from the create call as well
@@ -333,7 +331,7 @@ apiRouter.post('/jobs', async (req, res) => {
 });
 
 // --- Search jobs endpoint (for /api/jobs/search?q=...) ---
-apiRouter.get('/jobs/search', async (req, res) => {
+app.get('/api/jobs/search', async (req, res) => {
     try {
         const { q: query } = req.query;
         const where = {};
@@ -357,7 +355,7 @@ apiRouter.get('/jobs/search', async (req, res) => {
 });
 
 // --- Enhanced /api/jobs/:id endpoint (flatten company, parse JSON fields) ---
-apiRouter.get('/jobs/:id', async (req, res) => {
+app.get('/api/jobs/:id', async (req, res) => {
     try {
         const job = await Job.findByPk(req.params.id);
         if (!job) return res.status(404).json({ message: 'Job not found' });
@@ -391,7 +389,7 @@ apiRouter.get('/jobs/:id', async (req, res) => {
     }
 });
 
-apiRouter.put('/jobs/:id', async (req, res) => {
+app.put('/api/jobs/:id', async (req, res) => {
     const jobId = req.params.id;
     const { title, description, salary, location, type, companyId } = req.body;
     try {
@@ -409,7 +407,7 @@ apiRouter.put('/jobs/:id', async (req, res) => {
     }
 });
 
-apiRouter.delete('/jobs/:id', async (req, res) => {
+app.delete('/api/jobs/:id', async (req, res) => {
     const jobId = req.params.id;
     try {
         const job = await Job.findByPk(jobId);
@@ -425,7 +423,7 @@ apiRouter.delete('/jobs/:id', async (req, res) => {
     }
 });
 
-apiRouter.get('/companies', async (req, res) => {
+app.get('/api/companies', async (req, res) => {
     try {
         const companies = await Company.findAll();
         res.json(companies);
@@ -435,7 +433,7 @@ apiRouter.get('/companies', async (req, res) => {
     }
 });
 
-apiRouter.post('/companies', async (req, res) => {
+app.post('/api/companies', async (req, res) => {
     const { name, description, website, email, phone } = req.body;
     try {
         const company = await Company.create({ name, description, website, email, phone });
@@ -446,7 +444,7 @@ apiRouter.post('/companies', async (req, res) => {
     }
 });
 
-apiRouter.get('/companies/:id', async (req, res) => {
+app.get('/api/companies/:id', async (req, res) => {
     const companyId = req.params.id;
     try {
         const company = await Company.findByPk(companyId);
@@ -461,7 +459,7 @@ apiRouter.get('/companies/:id', async (req, res) => {
     }
 });
 
-apiRouter.put('/companies/:id', async (req, res) => {
+app.put('/api/companies/:id', async (req, res) => {
     const companyId = req.params.id;
     const { name, description, website, email, phone } = req.body;
     try {
@@ -478,7 +476,7 @@ apiRouter.put('/companies/:id', async (req, res) => {
     }
 });
 
-apiRouter.delete('/companies/:id', async (req, res) => {
+app.delete('/api/companies/:id', async (req, res) => {
     const companyId = req.params.id;
     try {
         const company = await Company.findByPk(companyId);
@@ -494,7 +492,7 @@ apiRouter.delete('/companies/:id', async (req, res) => {
     }
 });
 
-apiRouter.get('/profile', auth, async (req, res) => {
+app.get('/api/profile', auth, async (req, res) => {
     try {
         const user = await User.findByPk(req.user.id);
         if (!user) {
@@ -519,7 +517,7 @@ apiRouter.get('/profile', auth, async (req, res) => {
     }
 });
 
-apiRouter.put('/profile', async (req, res) => {
+app.put('/api/profile', async (req, res) => {
     const userId = req.user.id;
     const { name, email, password, phone, resume } = req.body;
     try {
@@ -541,7 +539,7 @@ apiRouter.put('/profile', async (req, res) => {
     }
 });
 
-apiRouter.post('/applications', async (req, res) => {
+app.post('/api/applications', async (req, res) => {
     const { userId, jobId, coverLetter, resume } = req.body;
     try {
         const application = await Application.create({ userId, jobId, coverLetter, resume });
@@ -553,7 +551,7 @@ apiRouter.post('/applications', async (req, res) => {
 });
 
 // Add auth to /api/applications and return applications for logged-in user
-apiRouter.get('/applications', auth, async (req, res) => {
+app.get('/api/applications', auth, async (req, res) => {
     const userId = req.user.id;
     try {
         const applications = await Application.findAll({
@@ -570,7 +568,7 @@ apiRouter.get('/applications', auth, async (req, res) => {
 });
 
 // --- Get current user's applications (for /api/applications/my) ---
-apiRouter.get('/applications/my', auth, async (req, res) => {
+app.get('/api/applications/my', auth, async (req, res) => {
     try {
         const applications = await Application.findAll({
             where: { userId: req.user.id },
@@ -581,13 +579,6 @@ apiRouter.get('/applications/my', auth, async (req, res) => {
         res.status(500).json({ message: 'Failed to retrieve applications', error: error.message });
     }
 });
-
-// Mount the API router at the correct path
-if (process.env.NODE_ENV === 'production') {
-    app.use(BASE_PATH + 'api', apiRouter);
-} else {
-    app.use('/api', apiRouter);
-}
 
 app.listen(PORT, async () => {
     console.log(`Server running on port ${PORT}`);

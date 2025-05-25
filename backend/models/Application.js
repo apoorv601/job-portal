@@ -10,6 +10,9 @@ const Application = sequelize.define('Application', {
   applicantEmail: DataTypes.STRING,
   status: { type: DataTypes.STRING, defaultValue: 'pending' },
   appliedAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+}, {
+  tableName: 'applications',
+  freezeTableName: true
 });
 
 module.exports = Application;
